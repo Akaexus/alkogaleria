@@ -1,3 +1,22 @@
+/*
+Niniejszy program jest wolnym oprogramowaniem; możesz go
+rozprowadzać dalej i / lub modyfikować na warunkach Powszechnej
+Licencji Publicznej GNU, wydanej przez Fundację Wolnego
+Oprogramowania - według wersji 2 tej Licencji lub(według twojego
+wyboru) którejś z późniejszych wersji.
+
+Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on
+użyteczny - jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyślnej
+gwarancji PRZYDATNOŚCI HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH
+ZASTOSOWAŃ.W celu uzyskania bliższych informacji sięgnij do
+Powszechnej Licencji Publicznej GNU.
+
+Z pewnością wraz z niniejszym programem otrzymałeś też egzemplarz
+Powszechnej Licencji Publicznej GNU(GNU General Public License);
+jeśli nie - napisz do Free Software Foundation, Inc., 59 Temple
+Place, Fifth Floor, Boston, MA  02110 - 1301  USA
+*/
+
 #define GLM_FORCE_RADIANS
 
 #include <GL/glew.h>
@@ -9,13 +28,14 @@
 #include <stdio.h>
 #include "constants.h"
 #include "allmodels.h"
+#include "lodepng.h"
 #include "shaderprogram.h"
 #include "myCube.h"
-#include <lodepng.h>
-#include <nlohmann/json.hpp>
+#include <RWModel.h>
 
 float speed_x = 0;//[radiany/s]
 float speed_y = 0;//[radiany/s]
+RWModel mp5;
 
 //Procedura obsługi błędów
 void error_callback(int error, const char* description) {
@@ -24,28 +44,28 @@ void error_callback(int error, const char* description) {
 
 GLuint tex; //Uchwyt – deklaracja globalna
 
-GLuint readTexture(const char* filename) {	
-  GLuint tex;	
-  glActiveTexture(GL_TEXTURE0); 	
+GLuint readTexture(const char* filename) {
+	GLuint tex;
+	glActiveTexture(GL_TEXTURE0);
 
-  //Wczytanie do pamięci komputera
-  std::vector<unsigned char> image;   //Alokuj wektor do wczytania obrazka
-  unsigned width, height;   //Zmienne do których wczytamy wymiary obrazka
-  //Wczytaj obrazek
-  unsigned error = lodepng::decode(image, width, height, filename);
- 
-  //Import do pamięci karty graficznej
-  glGenTextures(1,&tex); //Zainicjuj jeden uchwyt
-  glBindTexture(GL_TEXTURE_2D, tex); //Uaktywnij uchwyt
-  //Wczytaj obrazek do pamięci KG skojarzonej z uchwytem
-  glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0,
-    GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) image.data());	
+	//Wczytanie do pamięci komputera
+	std::vector<unsigned char> image;   //Alokuj wektor do wczytania obrazka
+	unsigned width, height;   //Zmienne do których wczytamy wymiary obrazka
+	//Wczytaj obrazek
+	unsigned error = lodepng::decode(image, width, height, filename);
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	
+	//Import do pamięci karty graficznej
+	glGenTextures(1, &tex); //Zainicjuj jeden uchwyt
+	glBindTexture(GL_TEXTURE_2D, tex); //Uaktywnij uchwyt
+	//Wczytaj obrazek do pamięci KG skojarzonej z uchwytem
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0,
+		GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*)image.data());
 
-  return tex;
-} 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	return tex;
+}
 
 void key_callback(
 	GLFWwindow* window,
@@ -81,31 +101,31 @@ void key_callback(
 
 //Procedura inicjująca
 void initOpenGLProgram(GLFWwindow* window) {
-    initShaders();
+	initShaders();
 	//************Tutaj umieszczaj kod, który należy wykonać raz, na początku programu************
 	glClearColor(0, 0, 0, 1); //Ustaw kolor czyszczenia bufora kolorów
 	glEnable(GL_DEPTH_TEST); //Włącz test głębokości na pikselach
 	glfwSetKeyCallback(window, key_callback);
-	tex = readTexture("bricks.png");
+	tex = readTexture("models/gun_para.png");
 }
 
 
 //Zwolnienie zasobów zajętych przez program
 void freeOpenGLProgram(GLFWwindow* window) {
-    freeShaders();
+	freeShaders();
 	glDeleteTextures(1, &tex);
-    //************Tutaj umieszczaj kod, który należy wykonać po zakończeniu pętli głównej************
+	//************Tutaj umieszczaj kod, który należy wykonać po zakończeniu pętli głównej************
 }
 
 //Procedura rysująca zawartość sceny
-void drawScene(GLFWwindow* window,float angle_x,float angle_y) {
+void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 	//************Tutaj umieszczaj kod rysujący obraz******************l
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Wyczyść bufor koloru i bufor głębokości
-	
+
 	glm::mat4 M = glm::mat4(1.0f); //Zainicjuj macierz modelu macierzą jednostkową
 	M = glm::rotate(M, angle_y, glm::vec3(0.0f, 1.0f, 0.0f)); //Pomnóż macierz modelu razy macierz obrotu o kąt angle wokół osi Y
 	M = glm::rotate(M, angle_x, glm::vec3(1.0f, 0.0f, 0.0f)); //Pomnóż macierz modelu razy macierz obrotu o kąt angle wokół osi X
-	glm::mat4 V = glm::lookAt(glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Wylicz macierz widoku
+	glm::mat4 V = glm::lookAt(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Wylicz macierz widoku
 	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 1.0f, 50.0f); //Wylicz macierz rzutowania
 
 
@@ -117,56 +137,56 @@ void drawScene(GLFWwindow* window,float angle_x,float angle_y) {
 	glUniformMatrix4fv(spLambertTextured->u("V"), 1, false, glm::value_ptr(V)); //Załaduj do programu cieniującego macierz widoku
 	glUniformMatrix4fv(spLambertTextured->u("M"), 1, false, glm::value_ptr(M)); //Załaduj do programu cieniującego macierz modelu
 
-	float texCoords[]={
-	  // 1
-	  1.0f, 0.0f,	//A
-	  0.0f, 1.0f,    //B
-	  0.0f, 0.0f,    //C
+	float texCoords[] = {
+		// 1
+		1.0f, 0.0f,	//A
+		0.0f, 1.0f,    //B
+		0.0f, 0.0f,    //C
 
-	  1.0f, 0.0f,    //A
-	  1.0f, 1.0f,    //D
-	  0.0f, 1.0f,    //B
-      
-	  // 2
-	  1.0f, 0.0f,	//A
-	  0.0f, 1.0f,    //B
-	  0.0f, 0.0f,    //C
+		1.0f, 0.0f,    //A
+		1.0f, 1.0f,    //D
+		0.0f, 1.0f,    //B
 
-	  1.0f, 0.0f,    //A
-	  1.0f, 1.0f,    //D
-	  0.0f, 1.0f,    //B
-      // 3
-	  1.0f, 0.0f,	//A
-	  0.0f, 1.0f,    //B
-	  0.0f, 0.0f,    //C
+		// 2
+		1.0f, 0.0f,	//A
+		0.0f, 1.0f,    //B
+		0.0f, 0.0f,    //C
 
-	  1.0f, 0.0f,    //A
-	  1.0f, 1.0f,    //D
-	  0.0f, 1.0f,    //B
-      // 4
-	  1.0f, 0.0f,	//A
-	  0.0f, 1.0f,    //B
-	  0.0f, 0.0f,    //C
+		1.0f, 0.0f,    //A
+		1.0f, 1.0f,    //D
+		0.0f, 1.0f,    //B
+		// 3
+		1.0f, 0.0f,	//A
+		0.0f, 1.0f,    //B
+		0.0f, 0.0f,    //C
 
-	  1.0f, 0.0f,    //A
-	  1.0f, 1.0f,    //D
-	  0.0f, 1.0f,    //B
-      // 5
-	  1.0f, 0.0f,	//A
-	  0.0f, 1.0f,    //B
-	  0.0f, 0.0f,    //C
+		1.0f, 0.0f,    //A
+		1.0f, 1.0f,    //D
+		0.0f, 1.0f,    //B
+		// 4
+		1.0f, 0.0f,	//A
+		0.0f, 1.0f,    //B
+		0.0f, 0.0f,    //C
 
-	  1.0f, 0.0f,    //A
-	  1.0f, 1.0f,    //D
-	  0.0f, 1.0f,    //B
-	  // 6
-	  1.0f, 0.0f,	//A
-	  0.0f, 1.0f,    //B
-	  0.0f, 0.0f,    //C
+		1.0f, 0.0f,    //A
+		1.0f, 1.0f,    //D
+		0.0f, 1.0f,    //B
+		// 5
+		1.0f, 0.0f,	//A
+		0.0f, 1.0f,    //B
+		0.0f, 0.0f,    //C
 
-	  1.0f, 0.0f,    //A
-	  1.0f, 1.0f,    //D
-	  0.0f, 1.0f,    //B
+		1.0f, 0.0f,    //A
+		1.0f, 1.0f,    //D
+		0.0f, 1.0f,    //B
+		// 6
+		1.0f, 0.0f,	//A
+		0.0f, 1.0f,    //B
+		0.0f, 0.0f,    //C
+
+		1.0f, 0.0f,    //A
+		1.0f, 1.0f,    //D
+		0.0f, 1.0f,    //B
 	};
 
 	float normals[] = {
@@ -227,21 +247,29 @@ void drawScene(GLFWwindow* window,float angle_x,float angle_y) {
 	};
 
 	glEnableVertexAttribArray(spLambertTextured->a("vertex"));
-	glVertexAttribPointer(spLambertTextured->a("vertex"), 4, GL_FLOAT, false, 0, myCubeVertices);
+	glVertexAttribPointer(spLambertTextured->a("vertex"), 4, GL_FLOAT, false, 0, mp5.vertices);
+	glEnableVertexAttribArray(spLambertTextured->a("vertex"));
+	glVertexAttribPointer(spLambertTextured->a("vertex"), 4, GL_FLOAT, false, 0, mp5.vertices);
 
+	//glEnableVertexAttribArray(spLambert->a("color"));
+	//glVertexAttribPointer(spLambert->a("color"), 4, GL_FLOAT, false, 0, mp5.colors);
+	
 	glEnableVertexAttribArray(spLambertTextured->a("normal"));
-	glVertexAttribPointer(spLambertTextured->a("normal"), 4, GL_FLOAT, false, 0, normals);
-
+	glVertexAttribPointer(spLambertTextured->a("normal"), 4, GL_FLOAT, false, 0, mp5.normals);
+	
 	glEnableVertexAttribArray(spLambertTextured->a("texCoord"));
-	glVertexAttribPointer(spLambertTextured->a("texCoord"), 2, GL_FLOAT, false, 0, texCoords);
+	glVertexAttribPointer(spLambertTextured->a("texCoord"), 2, GL_FLOAT, false, 0, mp5.texCoords);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glUniform1i(spLambertTextured->u("tex"), 0);
 
-	glDrawArrays(GL_TRIANGLES, 0, myCubeVertexCount);
+	
+	//glDrawArrays(GL_TRIANGLE_STRIP, 0, mp5.vertexCount);
+	glDrawElements(GL_TRIANGLE_STRIP, mp5.vertexIndicesCount * 3, GL_UNSIGNED_INT, mp5.vertexIndices);
 
 	glDisableVertexAttribArray(spLambertTextured->a("vertex"));
+	//glDisableVertexAttribArray(spColored->a("color"));
 	glDisableVertexAttribArray(spLambertTextured->a("normal"));
 	glDisableVertexAttribArray(spLambertTextured->a("texCoord"));
 
@@ -253,6 +281,17 @@ void drawScene(GLFWwindow* window,float angle_x,float angle_y) {
 
 int main(void)
 {
+
+	mp5 = RWModel::load("models/gun_para.json", 0);
+	printf("%d", mp5.vertexCount);
+
+	for (int i = 0; i < mp5.vertexCount; i++) {
+		printf("{%d} %f, %f\n", i, mp5.texCoords[2 * i + 0], mp5.texCoords[2 * i + 1]);
+	}
+	//printf("%d", mp5.vertexCount);
+
+	//printf("%s", mp5.textureName.c_str());
+
 	GLFWwindow* window; //Wskaźnik na obiekt reprezentujący okno
 
 	glfwSetErrorCallback(error_callback);//Zarejestruj procedurę obsługi błędów
@@ -290,7 +329,7 @@ int main(void)
 		angle_x += speed_x * glfwGetTime(); //Oblicz kąt o jaki obiekt obrócił się podczas poprzedniej klatki
 		angle_y += speed_y * glfwGetTime(); //Oblicz kąt o jaki obiekt obrócił się podczas poprzedniej klatki
 		glfwSetTime(0); //Wyzeruj licznik czasu
-		drawScene(window,angle_x,angle_y); //Wykonaj procedurę rysującą
+		drawScene(window, angle_x, angle_y); //Wykonaj procedurę rysującą
 		glfwPollEvents(); //Wykonaj procedury callback w zalezności od zdarzeń jakie zaszły.
 	}
 
