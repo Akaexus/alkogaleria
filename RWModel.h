@@ -7,7 +7,7 @@ class RWModel
 		int vertexCount;
 		float* vertices;
 		int* vertexIndices;
-		int vertexIndicesCount;
+		unsigned int vertexIndicesCount;
 		float* normals;
 		float* vertexNormals;
 		float* texCoords;

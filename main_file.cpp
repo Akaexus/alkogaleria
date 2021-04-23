@@ -106,7 +106,7 @@ void initOpenGLProgram(GLFWwindow* window) {
 	glClearColor(0, 0, 0, 1); //Ustaw kolor czyszczenia bufora kolorów
 	glEnable(GL_DEPTH_TEST); //Włącz test głębokości na pikselach
 	glfwSetKeyCallback(window, key_callback);
-	tex = readTexture("models/gun_para.png");
+	tex = readTexture("models/CJ_WOOD1.png");
 }
 
 
@@ -137,115 +137,6 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 	glUniformMatrix4fv(spLambertTextured->u("V"), 1, false, glm::value_ptr(V)); //Załaduj do programu cieniującego macierz widoku
 	glUniformMatrix4fv(spLambertTextured->u("M"), 1, false, glm::value_ptr(M)); //Załaduj do programu cieniującego macierz modelu
 
-	float texCoords[] = {
-		// 1
-		1.0f, 0.0f,	//A
-		0.0f, 1.0f,    //B
-		0.0f, 0.0f,    //C
-
-		1.0f, 0.0f,    //A
-		1.0f, 1.0f,    //D
-		0.0f, 1.0f,    //B
-
-		// 2
-		1.0f, 0.0f,	//A
-		0.0f, 1.0f,    //B
-		0.0f, 0.0f,    //C
-
-		1.0f, 0.0f,    //A
-		1.0f, 1.0f,    //D
-		0.0f, 1.0f,    //B
-		// 3
-		1.0f, 0.0f,	//A
-		0.0f, 1.0f,    //B
-		0.0f, 0.0f,    //C
-
-		1.0f, 0.0f,    //A
-		1.0f, 1.0f,    //D
-		0.0f, 1.0f,    //B
-		// 4
-		1.0f, 0.0f,	//A
-		0.0f, 1.0f,    //B
-		0.0f, 0.0f,    //C
-
-		1.0f, 0.0f,    //A
-		1.0f, 1.0f,    //D
-		0.0f, 1.0f,    //B
-		// 5
-		1.0f, 0.0f,	//A
-		0.0f, 1.0f,    //B
-		0.0f, 0.0f,    //C
-
-		1.0f, 0.0f,    //A
-		1.0f, 1.0f,    //D
-		0.0f, 1.0f,    //B
-		// 6
-		1.0f, 0.0f,	//A
-		0.0f, 1.0f,    //B
-		0.0f, 0.0f,    //C
-
-		1.0f, 0.0f,    //A
-		1.0f, 1.0f,    //D
-		0.0f, 1.0f,    //B
-	};
-
-	float normals[] = {
-		//ściana 1 - przednia
-		0.0f, 0.0f, -1.0f, 0.0f,
-		0.0f, 0.0f, -1.0f, 0.0f,
-		0.0f, 0.0f, -1.0f, 0.0f,
-
-		0.0f, 0.0f, -1.0f, 0.0f,
-		0.0f, 0.0f, -1.0f, 0.0f,
-		0.0f, 0.0f, -1.0f, 0.0f,
-
-		//ściana 2 - tylna
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-
-
-		//ściana 3 - dół
-		0.0f, -1.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f, 0.0f,
-
-		0.0f, -1.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f, 0.0f,
-
-		//ściana 4 - góra
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-
-		//ściana 5 - lewa
-		-1.0f, 0.0f, 0.0f, 0.0f,
-		-1.0f, 0.0f, 0.0f, 0.0f,
-		-1.0f, 0.0f, 0.0f, 0.0f,
-
-		-1.0f, 0.0f, 0.0f, 0.0f,
-		-1.0f, 0.0f, 0.0f, 0.0f,
-		-1.0f, 0.0f, 0.0f, 0.0f,
-
-		//ściana 6 - prawa
-		1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f, 0.0f,
-
-		1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f, 0.0f,
-	};
-
 	glEnableVertexAttribArray(spLambertTextured->a("vertex"));
 	glVertexAttribPointer(spLambertTextured->a("vertex"), 4, GL_FLOAT, false, 0, mp5.vertices);
 	glEnableVertexAttribArray(spLambertTextured->a("vertex"));
@@ -266,7 +157,7 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 
 	
 	//glDrawArrays(GL_TRIANGLE_STRIP, 0, mp5.vertexCount);
-	glDrawElements(GL_TRIANGLE_STRIP, mp5.vertexIndicesCount * 3, GL_UNSIGNED_INT, mp5.vertexIndices);
+	glDrawElements(GL_TRIANGLES, mp5.vertexIndicesCount * 3, GL_UNSIGNED_INT, mp5.vertexIndices);
 
 	glDisableVertexAttribArray(spLambertTextured->a("vertex"));
 	//glDisableVertexAttribArray(spColored->a("color"));
@@ -282,7 +173,7 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 int main(void)
 {
 
-	mp5 = RWModel::load("models/gun_para.json", 0);
+	mp5 = RWModel::load("models/bust_cabinet_2.json", 0);
 	printf("%d", mp5.vertexCount);
 
 	for (int i = 0; i < mp5.vertexCount; i++) {
