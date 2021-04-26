@@ -28,44 +28,24 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 #include <stdio.h>
 #include "constants.h"
 #include "allmodels.h"
-#include "lodepng.h"
+#include <lodepng.h>
 #include "shaderprogram.h"
 #include "myCube.h"
 #include <RWModel.h>
+#include <RWObject.h>
+#include <nlohmann/json.hpp>
+#include <fstream>
+
+using nlohmann::json;
 
 float speed_x = 0;//[radiany/s]
 float speed_y = 0;//[radiany/s]
-RWModel mp5;
 
 //Procedura obsługi błędów
 void error_callback(int error, const char* description) {
 	fputs(description, stderr);
 }
 
-GLuint tex; //Uchwyt – deklaracja globalna
-
-GLuint readTexture(const char* filename) {
-	GLuint tex;
-	glActiveTexture(GL_TEXTURE0);
-
-	//Wczytanie do pamięci komputera
-	std::vector<unsigned char> image;   //Alokuj wektor do wczytania obrazka
-	unsigned width, height;   //Zmienne do których wczytamy wymiary obrazka
-	//Wczytaj obrazek
-	unsigned error = lodepng::decode(image, width, height, filename);
-
-	//Import do pamięci karty graficznej
-	glGenTextures(1, &tex); //Zainicjuj jeden uchwyt
-	glBindTexture(GL_TEXTURE_2D, tex); //Uaktywnij uchwyt
-	//Wczytaj obrazek do pamięci KG skojarzonej z uchwytem
-	glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0,
-		GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*)image.data());
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	return tex;
-}
 
 void key_callback(
 	GLFWwindow* window,
@@ -97,37 +77,36 @@ void key_callback(
 		}
 	}
 }
-
+RWModel* mp5;
 
 //Procedura inicjująca
 void initOpenGLProgram(GLFWwindow* window) {
 	initShaders();
+
 	//************Tutaj umieszczaj kod, który należy wykonać raz, na początku programu************
 	glClearColor(0, 0, 0, 1); //Ustaw kolor czyszczenia bufora kolorów
 	glEnable(GL_DEPTH_TEST); //Włącz test głębokości na pikselach
 	glfwSetKeyCallback(window, key_callback);
-	tex = readTexture("models/CJ_WOOD1.png");
 }
 
 
 //Zwolnienie zasobów zajętych przez program
 void freeOpenGLProgram(GLFWwindow* window) {
 	freeShaders();
-	glDeleteTextures(1, &tex);
 	//************Tutaj umieszczaj kod, który należy wykonać po zakończeniu pętli głównej************
 }
 
 //Procedura rysująca zawartość sceny
 void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
+
 	//************Tutaj umieszczaj kod rysujący obraz******************l
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Wyczyść bufor koloru i bufor głębokości
 
 	glm::mat4 M = glm::mat4(1.0f); //Zainicjuj macierz modelu macierzą jednostkową
 	M = glm::rotate(M, angle_y, glm::vec3(0.0f, 1.0f, 0.0f)); //Pomnóż macierz modelu razy macierz obrotu o kąt angle wokół osi Y
 	M = glm::rotate(M, angle_x, glm::vec3(1.0f, 0.0f, 0.0f)); //Pomnóż macierz modelu razy macierz obrotu o kąt angle wokół osi X
-	glm::mat4 V = glm::lookAt(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Wylicz macierz widoku
+	glm::mat4 V = glm::lookAt(glm::vec3(0.0f, 0.0f, -1.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Wylicz macierz widoku
 	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 1.0f, 50.0f); //Wylicz macierz rzutowania
-
 
 	//Zamiast poniższych linijek należy wstawić kod dotyczący rysowania własnych obiektów (glDrawArrays/glDrawElements i wszystko dookoła)
 	//-----------
@@ -136,35 +115,37 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 	glUniformMatrix4fv(spLambertTextured->u("P"), 1, false, glm::value_ptr(P)); //Załaduj do programu cieniującego macierz rzutowania
 	glUniformMatrix4fv(spLambertTextured->u("V"), 1, false, glm::value_ptr(V)); //Załaduj do programu cieniującego macierz widoku
 	glUniformMatrix4fv(spLambertTextured->u("M"), 1, false, glm::value_ptr(M)); //Załaduj do programu cieniującego macierz modelu
-
 	glEnableVertexAttribArray(spLambertTextured->a("vertex"));
-	glVertexAttribPointer(spLambertTextured->a("vertex"), 4, GL_FLOAT, false, 0, mp5.vertices);
-	glEnableVertexAttribArray(spLambertTextured->a("vertex"));
-	glVertexAttribPointer(spLambertTextured->a("vertex"), 4, GL_FLOAT, false, 0, mp5.vertices);
+	glVertexAttribPointer(spLambertTextured->a("vertex"), 4, GL_FLOAT, false, 0, (*mp5).objects[0].vertices);
+	//glEnableVertexAttribArray(spLambertTextured->a("vertex"));
+	//glVertexAttribPointer(spLambertTextured->a("vertex"), 4, GL_FLOAT, false, 0, mp5.vertices);
 
 	//glEnableVertexAttribArray(spLambert->a("color"));
 	//glVertexAttribPointer(spLambert->a("color"), 4, GL_FLOAT, false, 0, mp5.colors);
 	
 	glEnableVertexAttribArray(spLambertTextured->a("normal"));
-	glVertexAttribPointer(spLambertTextured->a("normal"), 4, GL_FLOAT, false, 0, mp5.normals);
+	glVertexAttribPointer(spLambertTextured->a("normal"), 4, GL_FLOAT, false, 0, (*mp5).objects[0].normals);
 	
 	glEnableVertexAttribArray(spLambertTextured->a("texCoord"));
-	glVertexAttribPointer(spLambertTextured->a("texCoord"), 2, GL_FLOAT, false, 0, mp5.texCoords);
+	glVertexAttribPointer(spLambertTextured->a("texCoord"), 2, GL_FLOAT, false, 0, (*mp5).objects[0].texCoords);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex);
+	glBindTexture(GL_TEXTURE_2D, (*mp5).objects[0].texture);
 	glUniform1i(spLambertTextured->u("tex"), 0);
-
+	
 	
 	//glDrawArrays(GL_TRIANGLE_STRIP, 0, mp5.vertexCount);
-	glDrawElements(GL_TRIANGLES, mp5.vertexIndicesCount * 3, GL_UNSIGNED_INT, mp5.vertexIndices);
+	glDrawElements(
+		GL_TRIANGLES,
+		(*mp5).objects[0].vertexIndicesCount * 3,
+		GL_UNSIGNED_INT,
+		(*mp5).objects[0].vertexIndices
+	);
 
 	glDisableVertexAttribArray(spLambertTextured->a("vertex"));
 	//glDisableVertexAttribArray(spColored->a("color"));
 	glDisableVertexAttribArray(spLambertTextured->a("normal"));
 	glDisableVertexAttribArray(spLambertTextured->a("texCoord"));
-
-
 
 	glfwSwapBuffers(window); //Skopiuj bufor tylny do bufora przedniego
 }
@@ -173,15 +154,6 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 int main(void)
 {
 
-	mp5 = RWModel::load("models/bust_cabinet_2.json", 0);
-	printf("%d", mp5.vertexCount);
-
-	for (int i = 0; i < mp5.vertexCount; i++) {
-		printf("{%d} %f, %f\n", i, mp5.texCoords[2 * i + 0], mp5.texCoords[2 * i + 1]);
-	}
-	//printf("%d", mp5.vertexCount);
-
-	//printf("%s", mp5.textureName.c_str());
 
 	GLFWwindow* window; //Wskaźnik na obiekt reprezentujący okno
 
@@ -192,7 +164,7 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-	window = glfwCreateWindow(500, 500, "OpenGL", NULL, NULL);  //Utwórz okno 500x500 o tytule "OpenGL" i kontekst OpenGL.
+	window = glfwCreateWindow(750, 750, "OpenGL", NULL, NULL);  //Utwórz okno 500x500 o tytule "OpenGL" i kontekst OpenGL.
 
 	if (!window) //Jeżeli okna nie udało się utworzyć, to zamknij program
 	{
@@ -210,11 +182,18 @@ int main(void)
 	}
 
 	initOpenGLProgram(window); //Operacje inicjujące
+	std::ifstream ifs("models/gun_para.json");
+	json jf = json::parse(ifs);
+	ifs.close();
+
+	RWModel model("gun_para");
+	mp5 = &model;
 
 	//Główna pętla
 	float angle_x = 0; //zadeklaruj zmienną przechowującą aktualny kąt obrotu
 	float angle_y = 0; //zadeklaruj zmienną przechowującą aktualny kąt obrotu
 	glfwSetTime(0); //Wyzeruj licznik czasu
+	
 	while (!glfwWindowShouldClose(window)) //Tak długo jak okno nie powinno zostać zamknięte
 	{
 		angle_x += speed_x * glfwGetTime(); //Oblicz kąt o jaki obiekt obrócił się podczas poprzedniej klatki
