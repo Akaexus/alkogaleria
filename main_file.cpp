@@ -27,10 +27,8 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 #include <stdlib.h>
 #include <stdio.h>
 #include "constants.h"
-#include "allmodels.h"
 #include <lodepng.h>
 #include "shaderprogram.h"
-#include "myCube.h"
 #include <RWModel.h>
 #include <RWObject.h>
 #include <nlohmann/json.hpp>
