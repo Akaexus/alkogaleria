@@ -133,6 +133,17 @@ void RWObject::load(int index, nlohmann::json geometry, nlohmann::json textures,
 	if (this->hasTextures) {
 		this->initializeTexture(geometry["materialList"], textures);
 	}
+	
+	glm::mat3 temp;
+	for (int col = 0; col < 3; col++) {
+		for (int row = 0; row < 3; row++) {
+			temp[col][row] = (float)frameList["rotationMatrix"][row * 3 + col];
+		}
+	}
+	
+	this->M = glm::mat4(temp);
+	
+
 }
 
 void RWObject::initializeTexture(nlohmann::json materialList, nlohmann::json textures)

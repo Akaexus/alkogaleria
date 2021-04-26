@@ -33,8 +33,8 @@ RWModel::RWModel(std::string modelName)
 			objectIndex,
 			jf["model"]["geometryList"]["geometries"][objectIndex],
 			jf["model"]["geometryList"]["textures"][objectIndex],
-			jf["model"]["geometryList"]["frameList"][objectIndex],
-			jf["model"]["geometryList"]["atomics"][objectIndex]
+			jf["model"]["frameList"]["frames"][objectIndex],
+			jf["model"]["atomics"][objectIndex]
 		);
 	}
 }

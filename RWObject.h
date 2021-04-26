@@ -2,6 +2,7 @@
 #include <nlohmann/json.hpp>
 #include <GL/glew.h>
 #include <string>
+#include <glm/glm.hpp>
 class RWObject
 {
 	public:
@@ -27,6 +28,7 @@ class RWObject
 		// GEOMETRY
 		void initializeGeometry(nlohmann::json geometry);
 		void initializeTexture(nlohmann::json materialList, nlohmann::json textures);
+		glm::mat4 M;
 		int vertexCount;
 		float *vertices;
 		int *vertexIndices;
