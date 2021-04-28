@@ -180,10 +180,7 @@ int main(void)
 	}
 
 	initOpenGLProgram(window); //Operacje inicjujące
-	std::ifstream ifs("models/gun_para.json");
-	json jf = json::parse(ifs);
-	ifs.close();
-
+	
 	RWModel model("gun_para");
 	mp5 = &model;
 
