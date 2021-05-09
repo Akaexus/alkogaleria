@@ -179,7 +179,9 @@ int main(void)
 	}
 
 	initOpenGLProgram(window); //Operacje inicjujące
-	
+
+//XD
+
 	RWModel model("gun_para");
 	mp5 = &model;
 
