@@ -1,12 +1,12 @@
 #include "RWObject.h"
-#include <GL/glew.h>
+#include <libs/glew/include/GL/glew.h>
 #include "lodepng.h"
 #include <vector>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <libs/glew/include/GL/glew.h>
+#include <libs/GLFW/include/GLFW/glfw3.h>
+#include <libs/glm/glm.hpp>
+#include <libs/glm/gtc/type_ptr.hpp>
+#include <libs/glm/gtc/matrix_transform.hpp>
 
 const std::string RWObject::modelsLocation = "models";
 

@@ -19,18 +19,18 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 
 #define GLM_FORCE_RADIANS
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <libs/glew/include/GL/glew.h>
+#include <libs/GLFW/include/GLFW/glfw3.h>
+#include <libs/glm/glm.hpp>
+#include <libs/glm/gtc/type_ptr.hpp>
+#include <libs/glm/gtc/matrix_transform.hpp>
 #include <stdlib.h>
 #include <stdio.h>
 #include "constants.h"
 #include <lodepng.h>
 #include "shaderprogram.h"
-#include <RWModel.h>
-#include <RWObject.h>
+#include <map/RWModel.h>
+#include <map/RWObject.h>
 #include <nlohmann/json.hpp>
 #include <fstream>
 
@@ -97,10 +97,9 @@ void freeOpenGLProgram(GLFWwindow* window) {
 //Procedura rysująca zawartość sceny
 void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 
-	//************Tutaj umieszczaj kod rysujący obraz******************l
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Wyczyść bufor koloru i bufor głębokości
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glm::mat4 M = (*mp5).objects[0].M; //Zainicjuj macierz modelu macierzą jednostkową
+	glm::mat4 M = (*mp5).objects[0].M;
 	M = glm::rotate(M, angle_y, glm::vec3(0.0f, 1.0f, 0.0f)); //Pomnóż macierz modelu razy macierz obrotu o kąt angle wokół osi Y
 	M = glm::rotate(M, angle_x, glm::vec3(1.0f, 0.0f, 0.0f)); //Pomnóż macierz modelu razy macierz obrotu o kąt angle wokół osi X
 	glm::mat4 V = glm::lookAt(glm::vec3(0.0f, 0.0f, -1.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Wylicz macierz widoku

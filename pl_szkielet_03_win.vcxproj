@@ -20,16 +20,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h" />
-    <ClInclude Include="lodepng.h" />
-    <ClInclude Include="RWModel.h" />
-    <ClInclude Include="RWObject.h" />
+    <ClInclude Include="libs/lodepng.h" />
+    <ClInclude Include="map/Map.h" />
+    <ClInclude Include="map/RWModel.h" />
+    <ClInclude Include="map/RWObject.h" />
     <ClInclude Include="shaderprogram.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lodepng.cpp" />
+    <ClCompile Include="libs/lodepng.cpp" />
     <ClCompile Include="main_file.cpp" />
-    <ClCompile Include="RWModel.cpp" />
-    <ClCompile Include="RWObject.cpp" />
+    <ClCompile Include="map/Map.cpp" />
+    <ClCompile Include="map/RWModel.cpp" />
+    <ClCompile Include="map/RWObject.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -117,14 +119,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>glew\include;glfw\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>map;libs;libs\glew\include;libs\glfw\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>glew\lib;glfw\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>map;libs\glew\lib;libs\glfw\lib;libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>MSVCRT;LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>

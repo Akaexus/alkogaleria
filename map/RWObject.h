@@ -1,8 +1,8 @@
 #pragma once
 #include <nlohmann/json.hpp>
-#include <GL/glew.h>
+#include <libs/glew/include/GL/glew.h>
 #include <string>
-#include <glm/glm.hpp>
+#include <libs/glm/glm.hpp>
 class RWObject
 {
 	public:

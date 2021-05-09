@@ -22,7 +22,7 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 #define SHADERPROGRAM_H
 
 
-#include <GL/glew.h>
+#include <libs/glew/include/GL/glew.h>
 #include "stdio.h"
 
 
