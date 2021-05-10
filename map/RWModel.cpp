@@ -1,5 +1,5 @@
 #include "RWModel.h"
-#include <RWObject.h>
+#include <map/RWObject.h>
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <vector>
@@ -13,6 +13,7 @@ RWModel::RWModel()
 
 RWModel::~RWModel()
 {
+	printf("RWModel destruct");
 	if (this->objectsNumber) {
 		delete[] this->objects;
 	}
@@ -21,6 +22,7 @@ RWModel::~RWModel()
 RWModel::RWModel(std::string modelName)
 {
 	std::string filename = RWObject::modelsLocation + "/" + modelName + ".json";
+	printf("%s\n", filename.c_str());
 	std::ifstream ifs(filename);
 	json jf = json::parse(ifs);
 	ifs.close();
@@ -44,4 +46,14 @@ RWModel RWModel::load(std::string modelName)
 {
 	RWModel model(modelName);
 	return model;
+}
+
+void RWModel::setPosition(float x, float y, float z)
+{
+	// TODO
+}
+
+void RWModel::setRotation(float rx, float ry, float rz)
+{
+	// TODO
 }

@@ -7,6 +7,7 @@
 #include <libs/glm/glm.hpp>
 #include <libs/glm/gtc/type_ptr.hpp>
 #include <libs/glm/gtc/matrix_transform.hpp>
+#include <map/Map.h>
 
 const std::string RWObject::modelsLocation = "models";
 
@@ -38,7 +39,7 @@ RWObject::~RWObject()
 		if (this->hasColors) {
 			delete[] this->colors;
 		}
-		glDeleteTextures(1, &(this->texture));
+		glDeleteTextures(1, this->texture);
 	}
 }
 
@@ -128,6 +129,7 @@ void RWObject::initializeGeometry(nlohmann::json geometry)
 
 void RWObject::load(int index, nlohmann::json geometry, nlohmann::json textures, nlohmann::json frameList, nlohmann::json atomics)
 {
+	
 	this->index = index;
 	this->initializeGeometry(geometry);
 	if (this->hasTextures) {
@@ -142,8 +144,6 @@ void RWObject::load(int index, nlohmann::json geometry, nlohmann::json textures,
 	}
 	
 	this->M = glm::mat4(temp);
-	
-
 }
 
 void RWObject::initializeTexture(nlohmann::json materialList, nlohmann::json textures)
@@ -155,14 +155,17 @@ void RWObject::initializeTexture(nlohmann::json materialList, nlohmann::json tex
 
 
 	this->textureName = materialList["materialData"][0]["texture"]["textureName"];
-	
-	this->texture = this->readTexture(this->textureName);
+	std::map<std::string, GLuint>::iterator it = Map::textures.find(this->textureName);
+	if (it == Map::textures.end()) { // texture was not loaded in shared storage
+		Map::textures[this->textureName] = this->readTexture(this->textureName);
+	}
+	printf("%d\n", Map::textures[this->textureName]);
+	this->texture = &Map::textures[this->textureName];
 }
 
 
 GLuint RWObject::readTexture(std::string name) {
 	std::string filename = RWObject::modelsLocation + "/" + name + ".png";
-	
 	GLuint tex;
 	glActiveTexture(GL_TEXTURE0);
 	//Wczytanie do pamiêci komputera
@@ -171,7 +174,6 @@ GLuint RWObject::readTexture(std::string name) {
 	
 	//Wczytaj obrazek
 	unsigned error = lodepng::decode(image, width, height, filename.c_str());
-	
 	//Import do pamiêci karty graficznej
 	glGenTextures(1, &tex); //Zainicjuj jeden uchwyt
 	glBindTexture(GL_TEXTURE_2D, tex); //Uaktywnij uchwyt

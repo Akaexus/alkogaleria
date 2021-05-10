@@ -46,7 +46,7 @@ class RWObject
 		float* textureColor;
 		std::string textureName;
 		static GLuint readTexture(std::string name);
-		GLuint texture;
+		GLuint *texture;
 
 
 
