@@ -62,10 +62,10 @@ void key_callback(
 ) {
 	if (action == GLFW_PRESS) {
 		if (key == GLFW_KEY_KP_4) {
-			angle_direction = -angle_speed;
+			angle_direction = angle_speed;
 		}
 		else if (key == GLFW_KEY_KP_6) {
-			angle_direction = angle_speed;
+			angle_direction = -angle_speed;
 		}
 
 		if (key == GLFW_KEY_W) {

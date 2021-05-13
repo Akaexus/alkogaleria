@@ -55,5 +55,7 @@ void RWModel::setPosition(float x, float y, float z)
 
 void RWModel::setRotation(float rx, float ry, float rz)
 {
-	// TODO
+	for (int index = 0; index < this->objectsNumber; index++) {
+		this->objects[index].setRotation(rx, ry, rz);
+	}
 }

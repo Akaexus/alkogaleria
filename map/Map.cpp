@@ -17,7 +17,7 @@ Map::Map()
 		this->assignments[modelID] = modelName;
 	}
 	//this->CreateObject(12920, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
-	this->CreateObject(912, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
+	this->CreateObject(1509, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
 }
 
 std::string Map::getModelName(int modelID)

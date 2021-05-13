@@ -26,6 +26,8 @@ class RWObject
 		int index;
 		static const std::string modelsLocation;
 		// GEOMETRY
+		void setPosition(float x, float y, float z);
+		void setRotation(float rx, float ry, float rz);
 		void initializeGeometry(nlohmann::json geometry);
 		void initializeTexture(nlohmann::json materialList, nlohmann::json textures);
 		glm::mat4 M;
