@@ -50,7 +50,9 @@ RWModel RWModel::load(std::string modelName)
 
 void RWModel::setPosition(float x, float y, float z)
 {
-	// TODO
+	for (int index = 0; index < this->objectsNumber; index++) {
+		this->objects[index].setPosition(x, y, z);
+	}
 }
 
 void RWModel::setRotation(float rx, float ry, float rz)

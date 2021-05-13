@@ -43,12 +43,17 @@ RWObject::~RWObject()
 	}
 }
 
+void RWObject::setPosition(float x, float y, float z)
+{
+	this->M = glm::translate(this->M, glm::vec3(x, y, z));
+}
+
 void RWObject::setRotation(float rx, float ry, float rz)
 {
-	glm::vec3 axis[] = { {1,0,0},{0,1,0},{0,1,0} };
+	glm::vec3 axis[] = { {1,0,0},{0,1,0},{0,0,1} };
 	float angles[3] = { rx, ry, rz };
 	for (int i = 0; i < 3; i++) {
-		this->M = glm::rotate(M, glm::radians(angles[i]), axis[i]);
+		this->M = glm::rotate(this->M, glm::radians(angles[i]), axis[i]);
 	}
 }
 
@@ -153,7 +158,6 @@ void RWObject::load(int index, nlohmann::json geometry, nlohmann::json textures,
 	}
 	
 	this->M = glm::mat4(temp);
-	this->setRotation(-90, 0, 0);
 }
 
 void RWObject::initializeTexture(nlohmann::json materialList, nlohmann::json textures)

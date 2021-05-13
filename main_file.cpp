@@ -45,7 +45,8 @@ float x = 0,
 	  angle_speed = PI/2,
 	  direction_forward = 0,
 	  direction_side = 0,
-	  speed = 1;
+	  speed = 1,
+	  direction_vertical = 0;
 
 //Procedura obsługi błędów
 void error_callback(int error, const char* description) {
@@ -81,6 +82,13 @@ void key_callback(
 		else if (key == GLFW_KEY_D) {
 			direction_side = -speed;
 		}
+
+		if (key == GLFW_KEY_LEFT_SHIFT) {
+			direction_vertical = speed;
+		}
+		else if (key == GLFW_KEY_LEFT_CONTROL) {
+			direction_vertical = -speed;
+		}
 	}
 	if (action == GLFW_RELEASE) {
 		if (key == GLFW_KEY_KP_4 || key == GLFW_KEY_KP_6) {
@@ -93,6 +101,10 @@ void key_callback(
 
 		if (key == GLFW_KEY_D || key == GLFW_KEY_A) {
 			direction_side = 0;
+		}
+
+		if (key == GLFW_KEY_LEFT_CONTROL || key == GLFW_KEY_LEFT_SHIFT) {
+			direction_vertical = 0;
 		}
 	}
 }
@@ -119,25 +131,29 @@ void freeOpenGLProgram(GLFWwindow* window) {
 void drawScene(GLFWwindow* window, float angle, float x, float y, float z, Map* map) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	
 	glm::mat4 V = glm::lookAt(
 		glm::vec3(x, y, z), // position
 		glm::vec3(x + glm::sin(angle), y + 0.0f, z + glm::cos(angle)), // lookat
 		glm::vec3(0.0f, 1.0f, 0.0f) // up vector
 	); //Wylicz macierz widoku
 	printf("angle: %f, x %f, y %f, z %f\n", (angle * 180) / PI, x, y, z);
-	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 1.0f, 50.0f); //Wylicz macierz rzutowania
+	glm::mat4 P = glm::perspective(glm::radians(70.0f), 1.0f, 1.0f, 150.0f); //Wylicz macierz rzutowania
+
+
+	spTextured->use(); //Aktywuj program cieniujący
+	glUniform4f(spTextured->u("color"), 0, 1, 0, 1); //Ustaw kolor rysowania obiektu
+	glUniformMatrix4fv(spTextured->u("P"), 1, false, glm::value_ptr(P)); //Załaduj do programu cieniującego macierz rzutowania
+	glUniformMatrix4fv(spTextured->u("V"), 1, false, glm::value_ptr(V)); //Załaduj do programu cieniującego macierz widoku
+
 
 	for (int modelIndex = 0; modelIndex < map->objects.size(); modelIndex++) {
 		int objectsNumber = map->objects[modelIndex]->objectsNumber;
 		for (int objectIndex = 0; objectIndex < objectsNumber; objectIndex++) {
 			RWObject* object = &(map->objects[modelIndex]->objects[objectIndex]);
 			glm::mat4 M = object->M;
-			//-----------
-			spTextured->use(); //Aktywuj program cieniujący
-			glUniform4f(spTextured->u("color"), 0, 1, 0, 1); //Ustaw kolor rysowania obiektu
-			glUniformMatrix4fv(spTextured->u("P"), 1, false, glm::value_ptr(P)); //Załaduj do programu cieniującego macierz rzutowania
-			glUniformMatrix4fv(spTextured->u("V"), 1, false, glm::value_ptr(V)); //Załaduj do programu cieniującego macierz widoku
+			
+			
 			glUniformMatrix4fv(spTextured->u("M"), 1, false, glm::value_ptr(M)); //Załaduj do programu cieniującego macierz modelu
 			glEnableVertexAttribArray(spTextured->a("vertex"));
 
@@ -160,7 +176,6 @@ void drawScene(GLFWwindow* window, float angle, float x, float y, float z, Map* 
 			glBindTexture(GL_TEXTURE_2D, *(object->texture));
 			glUniform1i(spTextured->u("tex"), 0);
 
-			//glDrawArrays(GL_TRIANGLE_STRIP, 0, mp5.vertexCount);
 			glDrawElements(
 				GL_TRIANGLES,
 				object->vertexIndicesCount * 3,
@@ -173,11 +188,10 @@ void drawScene(GLFWwindow* window, float angle, float x, float y, float z, Map* 
 			if (object->hasNormals) {
 				glDisableVertexAttribArray(spTextured->a("normal"));
 			}
-			glDisableVertexAttribArray(spTextured->a("texCoord"));
-
-			glfwSwapBuffers(window); //Skopiuj bufor tylny do bufora przedniego
+			glDisableVertexAttribArray(spTextured->a("texCoord"));			
 		}
 	}
+	glfwSwapBuffers(window); //Skopiuj bufor tylny do bufora przedniego
 }
 
 
@@ -193,7 +207,7 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-	window = glfwCreateWindow(750, 750, "OpenGL", NULL, NULL);  //Utwórz okno 500x500 o tytule "OpenGL" i kontekst OpenGL.
+	window = glfwCreateWindow(1280, 1280, "OpenGL", NULL, NULL);  //Utwórz okno 500x500 o tytule "OpenGL" i kontekst OpenGL.
 
 	if (!window) //Jeżeli okna nie udało się utworzyć, to zamknij program
 	{
@@ -220,6 +234,7 @@ int main(void)
 		float timeDifferrence = glfwGetTime();
 		angle = fmod(angle + angle_direction * timeDifferrence, 2*PI);
 		x += (glm::sin(angle) * direction_forward + glm::cos(angle) * direction_side) * timeDifferrence;
+		y += direction_vertical * timeDifferrence;
 		z += (glm::sin(angle + 0.5*PI) * direction_forward + glm::cos(angle + 0.5 * PI) * direction_side) * timeDifferrence;
 
 		glfwSetTime(0); //Wyzeruj licznik czasu

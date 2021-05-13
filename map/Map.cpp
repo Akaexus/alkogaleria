@@ -17,8 +17,64 @@ Map::Map()
 		this->assignments[modelID] = modelName;
 	}
 	//this->CreateObject(12920, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
-	this->CreateObject(19824, 1.00, 0, 0, 0.00, 0.00, 0.00);
-	this->CreateObject(19823, 0.00, 0, 0, 0.00, 0.00, 90.00);
+	this->CreateObject(8355, 0.7387, 0.00, 48.976, 0.00, 0.00, 0.00);
+	/*this->CreateObject(8355, 9.4387, 14.00, 40.816, 0.00, 0.00, -90.00);
+	this->CreateObject(8355, -7.9313, 14.00, 48.926, 0.00, 0.00, 90.00);
+	this->CreateObject(8355, 0.7587, 10.00, -18.784, 90.00, 90.00, 90.00);
+	this->CreateObject(8355, -0.9413, 10.00, 5.156, 90.00, -90.00, 90.00);
+	this->CreateObject(8355, -5.6413, 10.00, 32.576, 0.00, 0.00, 180.00);
+	*/
+	//this->CreateObject(2631, -32.8113, 14.49, 67.376, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, 0.7587, 0.00, -16.024, 0.00, 0.00, 90.00);
+	this->CreateObject(2631, 0.7587, 0.00, -12.134, 0.00, 0.00, 90.00);
+	this->CreateObject(2631, 0.7587, 0.00, -4.344, 0.00, 0.00, 90.00);
+	this->CreateObject(2631, 0.7587, 0.00, -0.484, 0.00, 0.00, 90.00);
+	this->CreateObject(2631, 0.7587, 0.00, 3.416, 0.00, 0.00, 90.00);
+	this->CreateObject(2631, 0.7587, 0.00, 7.306, 0.00, 0.00, 90.00);
+	this->CreateObject(2631, 0.7687, 0.00, -8.244, 0.00, 0.00, 90.00);
+	this->CreateObject(2631, 3.5987, 0.00, -12.134, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, 7.4787, 0.00, -12.144, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, 3.5987, 0.00, -4.344, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, 7.4787, 0.00, -4.344, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, 3.5987, 0.00, 3.416, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, 7.4787, 0.00, 3.416, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, 3.5987, 0.00, -8.224, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, 3.5987, 0.00, -0.484, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, 7.4587, 0.00, -8.224, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, 7.4087, 0.00, -0.484, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, -2.0813, 0.00, 3.416, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, -5.9513, 0.00, 3.416, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, -2.0813, 0.00, -0.484, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, -5.9513, 0.00, -0.484, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, -2.0813, 0.00, -4.344, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, -5.9513, 0.00, -4.344, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, -2.0813, 0.00, -8.224, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, -5.9513, 0.00, -8.224, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, -2.0813, 0.00, -12.134, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, -5.9513, 0.00, -12.134, 0.00, 0.00, 0.00);
+	this->CreateObject(2631, 0.7587, 0.00, -19.924, 0.00, 0.00, 90.00);
+
+	this->CreateObject(1271, 7.7587, 0.37, 3.246, 0.00, 0.00, 0.00);
+	this->CreateObject(1271, 7.7587, 0.37, -0.504, 0.00, 0.00, 0.00);
+	this->CreateObject(1271, 7.7587, 0.37, -4.254, 0.00, 0.00, 0.00);
+	this->CreateObject(1271, 7.7587, 0.37, -8.254, 0.00, 0.00, 0.00);
+	this->CreateObject(1271, 7.7587, 0.37, -12.114, 0.00, 0.00, 0.00);
+	this->CreateObject(1271, -6.2413, 0.37, 3.246, 0.00, 0.00, 0.00);
+	this->CreateObject(1271, -6.2413, 0.37, -0.504, 0.00, 0.00, 0.00);
+	this->CreateObject(1271, -6.2413, 0.37, -4.254, 0.00, 0.00, 0.00);
+	this->CreateObject(1271, -6.2413, 0.37, -8.254, 0.00, 0.00, 0.00);
+	this->CreateObject(1271, -6.2413, 0.37, -12.114, 0.00, 0.00, 0.00);
+	this->CreateObject(19822, -6.2413, 0.70, -12.114, 0.00, 0.00, 0.00);
+	this->CreateObject(19821, -6.2413, 0.70, -8.254, 0.00, 0.00, 0.00);
+	this->CreateObject(19820, -6.2413, 0.70, -4.254, 0.00, 0.00, 0.00);
+	this->CreateObject(1509, -6.2413, 0.90, -0.504, 0.00, 0.00, 0.00);
+	this->CreateObject(1512, -6.2413, 0.90, 3.246, 0.00, 0.00, 0.00);
+	this->CreateObject(1517, 7.7587, 0.90, 3.246, 0.00, 0.00, 0.00);
+	this->CreateObject(1669, 7.7587, 0.90, -0.504, 0.00, 0.00, 0.00);
+	this->CreateObject(1544, 7.7587, 0.70, -4.254, 0.00, 0.00, 0.00);
+	this->CreateObject(19824, 7.7587, 0.75, -8.254, 0.00, 0.00, 0.00);
+	this->CreateObject(19823, 7.7587, 0.70, -12.114, 0.00, 90.00, 0.00);
+
 }
 
 std::string Map::getModelName(int modelID)
@@ -34,7 +90,7 @@ int Map::CreateObject(int modelid, float x, float y, float z, float rx, float ry
 	this->objects.push_back(new RWModel(this->getModelName(modelid)));
 	int index = this->objects.size() - 1;
 	this->objects[index]->setPosition(x, y, z);
-	this->objects[index]->setRotation(rx, ry, rz);
+	this->objects[index]->setRotation(rx-90, ry, rz);
 	return index;
 }
 
