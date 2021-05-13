@@ -116,13 +116,9 @@ void freeOpenGLProgram(GLFWwindow* window) {
 }
 
 //Procedura rysująca zawartość sceny
-void drawScene(GLFWwindow* window, float angle, float x, float y, float z) {
+void drawScene(GLFWwindow* window, float angle, float x, float y, float z, Map* map) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glm::mat4 M = (*mp5).objects[0].M;
-	//M = glm::rotate(M, angle_y, glm::vec3(0.0f, 1.0f, 0.0f)); //Pomnóż macierz modelu razy macierz obrotu o kąt angle wokół osi Y
-	//M = glm::rotate(M, angle_x, glm::vec3(1.0f, 0.0f, 0.0f)); //Pomnóż macierz modelu razy macierz obrotu o kąt angle wokół osi X
 
 	glm::mat4 V = glm::lookAt(
 		glm::vec3(x, y, z), // position
@@ -132,48 +128,56 @@ void drawScene(GLFWwindow* window, float angle, float x, float y, float z) {
 	printf("angle: %f, x %f, y %f, z %f\n", (angle * 180) / PI, x, y, z);
 	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 1.0f, 50.0f); //Wylicz macierz rzutowania
 
-	//Zamiast poniższych linijek należy wstawić kod dotyczący rysowania własnych obiektów (glDrawArrays/glDrawElements i wszystko dookoła)
-	//-----------
-	spTextured->use(); //Aktyeuj program cieniujący
-	glUniform4f(spTextured->u("color"), 0, 1, 0, 1); //Ustaw kolor rysowania obiektu
-	glUniformMatrix4fv(spTextured->u("P"), 1, false, glm::value_ptr(P)); //Załaduj do programu cieniującego macierz rzutowania
-	glUniformMatrix4fv(spTextured->u("V"), 1, false, glm::value_ptr(V)); //Załaduj do programu cieniującego macierz widoku
-	glUniformMatrix4fv(spTextured->u("M"), 1, false, glm::value_ptr(M)); //Załaduj do programu cieniującego macierz modelu
-	glEnableVertexAttribArray(spTextured->a("vertex"));
-	glVertexAttribPointer(spTextured->a("vertex"), 4, GL_FLOAT, false, 0, (*mp5).objects[0].vertices);
-	//glEnableVertexAttribArray(spLambertTextured->a("vertex"));
-	//glVertexAttribPointer(spLambertTextured->a("vertex"), 4, GL_FLOAT, false, 0, mp5.vertices);
+	for (int modelIndex = 0; modelIndex < map->objects.size(); modelIndex++) {
+		int objectsNumber = map->objects[modelIndex]->objectsNumber;
+		for (int objectIndex = 0; objectIndex < objectsNumber; objectIndex++) {
+			RWObject* object = &(map->objects[modelIndex]->objects[objectIndex]);
+			glm::mat4 M = object->M;
+			//-----------
+			spTextured->use(); //Aktywuj program cieniujący
+			glUniform4f(spTextured->u("color"), 0, 1, 0, 1); //Ustaw kolor rysowania obiektu
+			glUniformMatrix4fv(spTextured->u("P"), 1, false, glm::value_ptr(P)); //Załaduj do programu cieniującego macierz rzutowania
+			glUniformMatrix4fv(spTextured->u("V"), 1, false, glm::value_ptr(V)); //Załaduj do programu cieniującego macierz widoku
+			glUniformMatrix4fv(spTextured->u("M"), 1, false, glm::value_ptr(M)); //Załaduj do programu cieniującego macierz modelu
+			glEnableVertexAttribArray(spTextured->a("vertex"));
 
-	//glEnableVertexAttribArray(spLambert->a("color"));
-	//glVertexAttribPointer(spLambert->a("color"), 4, GL_FLOAT, false, 0, mp5.colors);
-	if ((*mp5).objects[0].hasNormals) {
-		glEnableVertexAttribArray(spTextured->a("normal"));
-		glVertexAttribPointer(spTextured->a("normal"), 4, GL_FLOAT, false, 0, (*mp5).objects[0].normals);
+			glVertexAttribPointer(spTextured->a("vertex"), 4, GL_FLOAT, false, 0, object->vertices);
+			//glEnableVertexAttribArray(spLambertTextured->a("vertex"));
+			//glVertexAttribPointer(spLambertTextured->a("vertex"), 4, GL_FLOAT, false, 0, mp5.vertices);
+
+			//glEnableVertexAttribArray(spLambert->a("color"));
+			//glVertexAttribPointer(spLambert->a("color"), 4, GL_FLOAT, false, 0, mp5.colors);
+
+			if (object->hasNormals) {
+				glEnableVertexAttribArray(spTextured->a("normal"));
+				glVertexAttribPointer(spTextured->a("normal"), 4, GL_FLOAT, false, 0, object->normals);
+			}
+
+			glEnableVertexAttribArray(spTextured->a("texCoord"));
+			glVertexAttribPointer(spTextured->a("texCoord"), 2, GL_FLOAT, false, 0, object->texCoords);
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, *(object->texture));
+			glUniform1i(spTextured->u("tex"), 0);
+
+			//glDrawArrays(GL_TRIANGLE_STRIP, 0, mp5.vertexCount);
+			glDrawElements(
+				GL_TRIANGLES,
+				object->vertexIndicesCount * 3,
+				GL_UNSIGNED_INT,
+				object->vertexIndices
+			);
+
+			glDisableVertexAttribArray(spTextured->a("vertex"));
+			//glDisableVertexAttribArray(spColored->a("color"));
+			if (object->hasNormals) {
+				glDisableVertexAttribArray(spTextured->a("normal"));
+			}
+			glDisableVertexAttribArray(spTextured->a("texCoord"));
+
+			glfwSwapBuffers(window); //Skopiuj bufor tylny do bufora przedniego
+		}
 	}
-	glEnableVertexAttribArray(spTextured->a("texCoord"));
-	glVertexAttribPointer(spTextured->a("texCoord"), 2, GL_FLOAT, false, 0, (*mp5).objects[0].texCoords);
-	
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, *(*mp5).objects[0].texture);
-	glUniform1i(spTextured->u("tex"), 0);
-
-	//glDrawArrays(GL_TRIANGLE_STRIP, 0, mp5.vertexCount);
-	glDrawElements(
-		GL_TRIANGLES,
-		(*mp5).objects[0].vertexIndicesCount * 3,
-		GL_UNSIGNED_INT,
-		(*mp5).objects[0].vertexIndices
-	);
-
-
-	glDisableVertexAttribArray(spTextured->a("vertex"));
-	//glDisableVertexAttribArray(spColored->a("color"));
-	if ((*mp5).objects[0].hasNormals) {
-		glDisableVertexAttribArray(spTextured->a("normal"));
-	}
-	glDisableVertexAttribArray(spTextured->a("texCoord"));
-	
-	glfwSwapBuffers(window); //Skopiuj bufor tylny do bufora przedniego
 }
 
 
@@ -208,9 +212,6 @@ int main(void)
 
 	initOpenGLProgram(window); //Operacje inicjujące
 	Map map;
-	mp5 = map.objects[0];
-	printf("object_loaded");
-	
 
 	glfwSetTime(0); //Wyzeruj licznik czasu
 	
@@ -222,7 +223,7 @@ int main(void)
 		z += (glm::sin(angle + 0.5*PI) * direction_forward + glm::cos(angle + 0.5 * PI) * direction_side) * timeDifferrence;
 
 		glfwSetTime(0); //Wyzeruj licznik czasu
-		drawScene(window, angle, x, y, z); //Wykonaj procedurę rysującą
+		drawScene(window, angle, x, y, z, &map); //Wykonaj procedurę rysującą
 		glfwPollEvents(); //Wykonaj procedury callback w zalezności od zdarzeń jakie zaszły.
 	}
 
