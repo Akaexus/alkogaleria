@@ -45,7 +45,7 @@ float x = 0,
 	  angle_speed = PI/2,
 	  direction_forward = 0,
 	  direction_side = 0,
-	  speed = 1,
+	  speed = 3,
 	  direction_vertical = 0;
 
 //Procedura obsługi błędów
@@ -137,8 +137,8 @@ void drawScene(GLFWwindow* window, float angle, float x, float y, float z, Map* 
 		glm::vec3(x + glm::sin(angle), y + 0.0f, z + glm::cos(angle)), // lookat
 		glm::vec3(0.0f, 1.0f, 0.0f) // up vector
 	); //Wylicz macierz widoku
-	printf("angle: %f, x %f, y %f, z %f\n", (angle * 180) / PI, x, y, z);
-	glm::mat4 P = glm::perspective(glm::radians(70.0f), 1.0f, 1.0f, 150.0f); //Wylicz macierz rzutowania
+	//printf("angle: %f, x %f, y %f, z %f\n", (angle * 180) / PI, x, y, z);
+	glm::mat4 P = glm::perspective(glm::radians(70.0f), 1.0f, 0.1f, 60.0f); //Wylicz macierz rzutowania
 
 
 	spTextured->use(); //Aktywuj program cieniujący
@@ -207,7 +207,7 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-	window = glfwCreateWindow(1280, 1280, "OpenGL", NULL, NULL);  //Utwórz okno 500x500 o tytule "OpenGL" i kontekst OpenGL.
+	window = glfwCreateWindow(1280, 1280, "Alkogaleria", NULL, NULL);  //Utwórz okno 500x500 o tytule "OpenGL" i kontekst OpenGL.
 
 	if (!window) //Jeżeli okna nie udało się utworzyć, to zamknij program
 	{

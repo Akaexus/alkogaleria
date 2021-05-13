@@ -173,7 +173,6 @@ void RWObject::initializeTexture(nlohmann::json materialList, nlohmann::json tex
 	if (it == Map::textures.end()) { // texture was not loaded in shared storage
 		Map::textures[this->textureName] = this->readTexture(this->textureName);
 	}
-	printf("%d\n", Map::textures[this->textureName]);
 	this->texture = &Map::textures[this->textureName];
 }
 

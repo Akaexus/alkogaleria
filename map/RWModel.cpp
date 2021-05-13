@@ -13,7 +13,6 @@ RWModel::RWModel()
 
 RWModel::~RWModel()
 {
-	printf("RWModel destruct");
 	if (this->objectsNumber) {
 		delete[] this->objects;
 	}
@@ -22,7 +21,6 @@ RWModel::~RWModel()
 RWModel::RWModel(std::string modelName)
 {
 	std::string filename = RWObject::modelsLocation + "/" + modelName + ".json";
-	printf("%s\n", filename.c_str());
 	std::ifstream ifs(filename);
 	json jf = json::parse(ifs);
 	ifs.close();
@@ -39,6 +37,7 @@ RWModel::RWModel(std::string modelName)
 			jf["model"]["atomics"][objectIndex]
 		);
 	}
+	printf("Loaded object %s with texture %s\n", filename.c_str(), this->objects[0].textureName.c_str());
 }
 
 
