@@ -60,3 +60,10 @@ void RWModel::setRotation(float rx, float ry, float rz)
 		this->objects[index].setRotation(rx, ry, rz);
 	}
 }
+
+void RWModel::setTexture(std::string textureName)
+{
+	for (int index = 0; index < this->objectsNumber; index++) {
+		this->objects[index].setTexture(textureName);
+	}
+}

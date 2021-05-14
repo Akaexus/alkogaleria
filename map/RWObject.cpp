@@ -166,16 +166,19 @@ void RWObject::initializeTexture(nlohmann::json materialList, nlohmann::json tex
 	for (int i = 0; i < 4; i++) {
 		this->textureColor[i] = materialList["materialData"][0]["color"][i] / 255.0;
 	}
-
-
-	this->textureName = materialList["materialData"][0]["texture"]["textureName"];
-	std::map<std::string, GLuint>::iterator it = Map::textures.find(this->textureName);
-	if (it == Map::textures.end()) { // texture was not loaded in shared storage
-		Map::textures[this->textureName] = this->readTexture(this->textureName);
-	}
-	this->texture = &Map::textures[this->textureName];
+	this->setTexture(materialList["materialData"][0]["texture"]["textureName"]);
 }
 
+
+void RWObject::setTexture(std::string textureName)
+{
+	this->textureName = textureName;
+	std::map<std::string, GLuint>::iterator it = Map::textures.find(textureName);
+	if (it == Map::textures.end()) { // texture was not loaded in shared storage
+		Map::textures[textureName] = this->readTexture(textureName);
+	}
+	this->texture = &Map::textures[textureName];
+}
 
 GLuint RWObject::readTexture(std::string name) {
 	std::string filename = RWObject::modelsLocation + "/" + name + ".png";

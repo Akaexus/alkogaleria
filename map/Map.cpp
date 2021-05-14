@@ -18,12 +18,18 @@ Map::Map()
 	}
 	//this->CreateObject(12920, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
 	// 
-	this->CreateObject(8355, 0, 0.00, -7.0, 90.00, 0.00, 0.00); // podloga
-	this->CreateObject(8355, 0, 4.00, -7.0, 90.00, 180.00, 0.00); // sufit
-	this->CreateObject(8355, 0, 0.00, 10, 0.00, 0.00, 0.00); // sciana
-	this->CreateObject(8355, 10, 0.00, -7, 0.00, 0.00, 90.00); // sciana
-	this->CreateObject(8355, -10, 0.00, -7, 0.00, 0.00, 90.00); // sciana
-	this->CreateObject(8355, 0, 0.00, -15, 0.00, 0.00, 180.00); // sciana
+	int floor = this->CreateObject(8355, 0, 0.00, -7.0, 90.00, 0.00, 0.00); // podloga
+	this->objects[floor]->setTexture("woodfloor1");
+	int ceiling = this->CreateObject(8355, 0, 4.00, -7.0, 90.00, 180.00, 0.00); // sufit
+	this->objects[ceiling]->setTexture("beige_64");
+	int wall1 = this->CreateObject(8355, 0, 0.00, 10, 0.00, 0.00, 0.00); // sciana
+	int wall2 = this->CreateObject(8355, 10, 0.00, -7, 0.00, 0.00, 90.00); // sciana
+	int wall3 = this->CreateObject(8355, -10, 0.00, -7, 0.00, 0.00, 90.00); // sciana
+	int wall4 = this->CreateObject(8355, 0, 0.00, -15, 0.00, 0.00, 180.00); // sciana
+	this->objects[wall1]->setTexture("bank_wall1");
+	this->objects[wall2]->setTexture("bank_wall1");
+	this->objects[wall3]->setTexture("bank_wall1");
+	this->objects[wall4]->setTexture("bank_wall1");
 
 	//this->CreateObject(8355, 0.7387, 0.00, 48.976, 0.00, 0.00, 0.00);
 	/*this->CreateObject(8355, 9.4387, 14.00, 40.816, 0.00, 0.00, -90.00);

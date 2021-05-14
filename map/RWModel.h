@@ -17,5 +17,6 @@ class RWModel
 		static RWModel load(std::string modelName);
 		void setPosition(float x, float y, float z);
 		void setRotation(float rx, float ry, float rz);
+		void setTexture(std::string textureName);
 };
 
