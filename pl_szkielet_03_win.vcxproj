@@ -20,13 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="libs/lodepng.h" />
+    <ClInclude Include="main_file.h" />
     <ClInclude Include="map/Map.h" />
     <ClInclude Include="map/RWModel.h" />
     <ClInclude Include="map/RWObject.h" />
     <ClInclude Include="shaderprogram.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="libs/lodepng.cpp" />
     <ClCompile Include="main_file.cpp" />
     <ClCompile Include="map/Map.cpp" />
