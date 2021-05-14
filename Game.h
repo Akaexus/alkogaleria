@@ -20,6 +20,7 @@ class Game
 		Map* map;
 
 	protected:
+		float aspectRatio = 16 / 9;
 		const float PLAYER_SPEED = 3;
 		const float PLAYER_ROTATION_SPEED = PI / 2;
 		float angle_direction = 0,
@@ -42,6 +43,10 @@ class Game
 		static void keyCallback_handler(GLFWwindow* window, int key, int scancode, int action, int mod);
 		void timePassed(float timeDifferrence);
 		void updateVMatrix();
+		void updatePerspectiveMatrix();
+		static void windowResizeCallback_handler(GLFWwindow* window, int width, int height);
+		void windowResizeCallback(GLFWwindow* window, int width, int height);
+
 
 };
 

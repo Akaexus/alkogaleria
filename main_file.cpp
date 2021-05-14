@@ -136,11 +136,12 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-	GLFWwindow* window = glfwCreateWindow(1280, 1280, "Alkogaleria", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(1280, 720, "Alkogaleria", NULL, NULL);
 	initOpenGLProgram(window);
 
 	Game &game = Game::getInstance();
 	glfwSetKeyCallback(window, &Game::keyCallback_handler);
+	glfwSetWindowSizeCallback(window, &Game::windowResizeCallback_handler);
 
 	glfwSetTime(0); //reset time
 	while (!glfwWindowShouldClose(window))

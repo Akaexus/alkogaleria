@@ -23,8 +23,11 @@ Game::Game()
 	this->map = new Map;
 
 	// initialize perspective matrix
-	this->P = glm::perspective(glm::radians(70.0f), 1.0f, 0.1f, 60.0f); //Wylicz macierz rzutowania
+	this->updatePerspectiveMatrix();
+}
 
+void Game::updatePerspectiveMatrix() {
+	this->P = glm::perspective(glm::radians(70.0f), this->aspectRatio, 0.1f, 60.0f); //Wylicz macierz rzutowania
 }
 
 /// <summary>
@@ -122,4 +125,17 @@ void Game::keyCallback(GLFWwindow* window, int key, int scancode, int action, in
 			this->direction_vertical = 0;
 		}
 	}
+}
+
+void Game::windowResizeCallback_handler(GLFWwindow* window, int width, int height) {
+	Game::getInstance().windowResizeCallback(window, width, height);
+}
+
+void Game::windowResizeCallback(GLFWwindow* window, int width, int height) {
+	if (height == 0) {
+		return;
+	}
+	this->aspectRatio = (float)width / (float)height;
+	this->updatePerspectiveMatrix();
+	glViewport(0, 0, width, height);
 }
