@@ -64,15 +64,13 @@ void RWObject::initializeGeometry(nlohmann::json geometry)
 	this->vertexCount = geometry["vertexInformation"].size();
 	this->vertices = new float[this->vertexCount * 4];
 	
-	// VERTEX INDICES
+	// VERTEX INDICES (FACES)
 	this->vertexIndicesCount = geometry["faceInformation"].size();
 	this->vertexIndices = new int[this->vertexIndicesCount * 3];
+
 	// NORMALS
 	this->hasNormals = (bool)geometry["normalInformation"].size();
-
-	if (this->hasNormals) {
-		this->normals = new float[this->vertexCount * 4];
-	}
+	this->normals = new float[this->vertexCount * 4];
 
 
 	// TEXCOORDS
@@ -138,6 +136,27 @@ void RWObject::initializeGeometry(nlohmann::json geometry)
 	// BOUDING SPHERE
 	for (int i = 0; i < 4; i++) {
 		this->boundingSphere[i] = geometry["boundingSphere"][i];
+	}
+
+	// calculate normals if they are not defined in json file
+	if (!this->hasNormals) {
+		for (int i = 0; i < this->vertexIndicesCount; i++) {
+			int Aindex = this->vertexIndices[3 * i + 0];
+			int Bindex = this->vertexIndices[3 * i + 1];
+			int Cindex = this->vertexIndices[3 * i + 2];
+			glm::vec3 A = glm::vec3(this->vertices[4 * Aindex + 0], this->vertices[4 * Aindex + 1], this->vertices[4 * Aindex + 2]);
+			glm::vec3 B = glm::vec3(this->vertices[4 * Bindex + 0], this->vertices[4 * Bindex + 1], this->vertices[4 * Bindex + 2]);
+			glm::vec3 C = glm::vec3(this->vertices[4 * Cindex + 0], this->vertices[4 * Cindex + 1], this->vertices[4 * Cindex + 2]);
+			glm::vec3 a = B - A;
+			glm::vec3 b = C - A;
+			glm::vec3 n = glm::normalize(glm::cross(a, b));
+			for (int coordIndex = 0; coordIndex < 3; coordIndex++) {
+				this->normals[4 * vertexIndicesCount + coordIndex] = n[coordIndex];
+			}
+			this->normals[4 * vertexIndicesCount + 3] = 0.0f;
+			this->hasNormals = true;
+		}
+
 	}
 }
 

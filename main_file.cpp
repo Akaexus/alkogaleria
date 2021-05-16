@@ -18,6 +18,7 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 */
 
 #define GLM_FORCE_RADIANS
+#define GLM_FORCE_SWIZZLE
 
 #include <libs/glew/include/GL/glew.h>
 #include <libs/GLFW/include/GLFW/glfw3.h>
@@ -77,10 +78,10 @@ void drawScene(GLFWwindow* window, Game* game) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	spTextured->use();
-	glUniform4f(spTextured->u("color"), 0, 1, 0, 1); // set object color
-	glUniformMatrix4fv(spTextured->u("P"), 1, false, glm::value_ptr(game->P)); // load perspective matrix to shader program
-	glUniformMatrix4fv(spTextured->u("V"), 1, false, glm::value_ptr(game->V)); // load view matrix to shader program
+	spLambertTextured->use();
+	glUniform4f(spLambertTextured->u("color"), 0, 1, 0, 1); // set object color
+	glUniformMatrix4fv(spLambertTextured->u("P"), 1, false, glm::value_ptr(game->P)); // load perspective matrix to shader program
+	glUniformMatrix4fv(spLambertTextured->u("V"), 1, false, glm::value_ptr(game->V)); // load view matrix to shader program
 	
 	// loop through objects
 	for (int modelIndex = 0; modelIndex < game->map->objects.size(); modelIndex++) {
@@ -90,24 +91,24 @@ void drawScene(GLFWwindow* window, Game* game) {
 			glm::mat4 M = object->M;
 			
 			
-			glUniformMatrix4fv(spTextured->u("M"), 1, false, glm::value_ptr(M)); // load model matrix
+			glUniformMatrix4fv(spLambertTextured->u("M"), 1, false, glm::value_ptr(M)); // load model matrix
 			// vertices
-			glEnableVertexAttribArray(spTextured->a("vertex"));
-			glVertexAttribPointer(spTextured->a("vertex"), 4, GL_FLOAT, false, 0, object->vertices);
+			glEnableVertexAttribArray(spLambertTextured->a("vertex"));
+			glVertexAttribPointer(spLambertTextured->a("vertex"), 4, GL_FLOAT, false, 0, object->vertices);
 
 			// normals
 			if (object->hasNormals) {
-				glEnableVertexAttribArray(spTextured->a("normal"));
-				glVertexAttribPointer(spTextured->a("normal"), 4, GL_FLOAT, false, 0, object->normals);
+				glEnableVertexAttribArray(spLambertTextured->a("normal"));
+				glVertexAttribPointer(spLambertTextured->a("normal"), 4, GL_FLOAT, false, 0, object->normals);
 			}
 
 			// textures
-			glEnableVertexAttribArray(spTextured->a("texCoord"));
-			glVertexAttribPointer(spTextured->a("texCoord"), 2, GL_FLOAT, false, 0, object->texCoords);
+			glEnableVertexAttribArray(spLambertTextured->a("texCoord"));
+			glVertexAttribPointer(spLambertTextured->a("texCoord"), 2, GL_FLOAT, false, 0, object->texCoords);
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, *(object->texture));
-			glUniform1i(spTextured->u("tex"), 0);
+			glUniform1i(spLambertTextured->u("tex"), 0);
 
 			glDrawElements(
 				GL_TRIANGLES,
@@ -116,11 +117,11 @@ void drawScene(GLFWwindow* window, Game* game) {
 				object->vertexIndices
 			);
 
-			glDisableVertexAttribArray(spTextured->a("vertex"));
+			glDisableVertexAttribArray(spLambertTextured->a("vertex"));
 			if (object->hasNormals) {
-				glDisableVertexAttribArray(spTextured->a("normal"));
+				glDisableVertexAttribArray(spLambertTextured->a("normal"));
 			}
-			glDisableVertexAttribArray(spTextured->a("texCoord"));			
+			glDisableVertexAttribArray(spLambertTextured->a("texCoord"));
 		}
 	}
 	glfwSwapBuffers(window); // swap front and back buffers

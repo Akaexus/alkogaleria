@@ -1130,7 +1130,7 @@
             72.05809783935547
           ],
           "hasPosition": 1,
-          "hasNormals": 0,
+          "hasNormals": 1,
           "vertexInformation": [
             [-20.0, 0, -20.0],
 			[20.0, 0, -20.0],
@@ -1138,8 +1138,13 @@
 			[-20.0, 0, 20.0]
           ],
           "normalInformation": [
-			
-		  ],
+            [ 0, 1, 0 ],
+            [ 0, 1, 0 ],
+            [ 0, 1, 0 ],
+            [ 0, 1, 0 ],
+            [ 0, 1, 0 ],
+            [ 0, 1, 0 ]
+          ],
           "materialList": {
             "materialInstanceCount": 2,
             "materialData": [
