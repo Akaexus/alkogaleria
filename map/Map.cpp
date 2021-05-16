@@ -104,7 +104,7 @@ std::string Map::getModelName(int modelID)
 
 int Map::CreateObject(int modelid, float x, float y, float z, float rx, float ry, float rz)
 {
-	this->objects.push_back(new RWModel(this->getModelName(modelid)));
+	this->objects.push_back(new RWModel(this->getModelName(modelid), modelid));
 	int index = this->objects.size() - 1;
 	this->objects[index]->setPosition(x, y, z);
 	this->objects[index]->setRotation(rx-90, ry, rz);

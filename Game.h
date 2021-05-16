@@ -9,6 +9,7 @@
 #include <libs/glm/gtc/type_ptr.hpp>
 #include <libs/glm/gtc/matrix_transform.hpp>
 #include <constants.h>
+#include <vector>
 
 class Game
 {
@@ -23,6 +24,7 @@ class Game
 		float aspectRatio = 16 / 9;
 		const float PLAYER_SPEED = 3;
 		const float PLAYER_ROTATION_SPEED = PI / 2;
+		const float BOTTLE_ROTATION_SPEED = PI / 5;
 		float angle_direction = 0,
 			direction_forward = 0,
 			direction_side = 0,
@@ -31,6 +33,9 @@ class Game
 	public:
 		glm::mat4 P; // perspective matrix
 		glm::mat4 V; // view matrix
+	// objects
+	public:
+		std::vector<RWModel*> bottleHandlers;
 
 
 	// ============= METHODS ================
@@ -38,14 +43,16 @@ class Game
 		Game();
 	public:
 		static Game& getInstance();
-		void updatePosition(float timeDifferrence);
 		void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mod);
 		static void keyCallback_handler(GLFWwindow* window, int key, int scancode, int action, int mod);
 		void timePassed(float timeDifferrence);
+		void updatePosition(float timeDifferrence);
+		void spinBottles(float timeDifference);
 		void updateVMatrix();
 		void updatePerspectiveMatrix();
 		static void windowResizeCallback_handler(GLFWwindow* window, int width, int height);
 		void windowResizeCallback(GLFWwindow* window, int width, int height);
+		
 
 
 };

@@ -18,8 +18,10 @@ RWModel::~RWModel()
 	}
 }
 
-RWModel::RWModel(std::string modelName)
+RWModel::RWModel(std::string modelName, int modelid)
 {
+	this->modelName = modelName;
+	this->modelID = modelid;
 	std::string filename = RWObject::modelsLocation + "/" + modelName + ".json";
 	std::ifstream ifs(filename);
 	json jf = json::parse(ifs);
@@ -41,9 +43,9 @@ RWModel::RWModel(std::string modelName)
 }
 
 
-RWModel RWModel::load(std::string modelName)
+RWModel RWModel::load(std::string modelName, int modelid)
 {
-	RWModel model(modelName);
+	RWModel model(modelName, modelid);
 	return model;
 }
 
@@ -59,6 +61,14 @@ void RWModel::setRotation(float rx, float ry, float rz)
 	for (int index = 0; index < this->objectsNumber; index++) {
 		this->objects[index].setRotation(rx, ry, rz);
 	}
+}
+
+void RWModel::setRotationRadians(float rx, float ry, float rz)
+{
+	rx = glm::degrees(rx);
+	ry = glm::degrees(ry);
+	rz = glm::degrees(rz);
+	this->setRotation(rx, ry, rz);
 }
 
 void RWModel::setTexture(std::string textureName)

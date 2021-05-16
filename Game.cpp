@@ -24,6 +24,26 @@ Game::Game()
 
 	// initialize perspective matrix
 	this->updatePerspectiveMatrix();
+
+	// grab bottle ids
+	int bottleModelIDs[] = { 19822,
+		19821,
+		19820,
+		1509,
+		1512,
+		1517,
+		1669,
+		1544,
+		19824,
+		19823 };
+	for (int objectIndex = 0; objectIndex < this->map->objects.size(); objectIndex++) {
+		for (int i = 0; i < sizeof(bottleModelIDs) / sizeof(int); i++) {
+			if (this->map->objects[objectIndex]->modelID == bottleModelIDs[i]) {
+				this->bottleHandlers.push_back(this->map->objects[objectIndex]);
+				break;
+			}
+		}		
+	}
 }
 
 void Game::updatePerspectiveMatrix() {
@@ -42,6 +62,12 @@ void Game::updatePosition(float timeDifferrence)
 	this->z += (glm::sin(this->angle + 0.5 * PI) * this->direction_forward + glm::cos(this->angle + 0.5 * PI) * this->direction_side) * timeDifferrence;
 }
 
+void Game::spinBottles(float timeDifference)
+{
+	for (int i = 0; i < this->bottleHandlers.size(); i++) {
+		this->bottleHandlers[i]->setRotationRadians(0, 0, timeDifference * BOTTLE_ROTATION_SPEED);
+	}
+}
 /// <summary>
 /// Static wrapper for Game::keyCallback
 /// </summary>
@@ -57,6 +83,7 @@ void Game::keyCallback_handler(GLFWwindow* window, int key, int scancode, int ac
 void Game::timePassed(float timeDifferrence)
 {
 	this->updatePosition(timeDifferrence);
+	this->spinBottles(timeDifferrence);
 	this->updateVMatrix();
 }
 

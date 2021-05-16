@@ -10,13 +10,16 @@ class RWModel
 	public:
 		RWModel();
 		~RWModel();
-		RWModel(std::string modelName);
+		RWModel(std::string modelName, int modelid);
 		int objectsNumber;
+		int modelID;
+		std::string modelName;
 		RWObject* objects;
 		//std::map<std::string, RWObject> objects;
-		static RWModel load(std::string modelName);
+		static RWModel load(std::string modelName, int modelid);
 		void setPosition(float x, float y, float z);
 		void setRotation(float rx, float ry, float rz);
+		void setRotationRadians(float rx, float ry, float rz);
 		void setTexture(std::string textureName);
 };
 
