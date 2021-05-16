@@ -17,59 +17,44 @@ Map::Map()
 		this->assignments[modelID] = modelName;
 	}
 	//this->CreateObject(12920, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
-	// 
-	int floor = this->CreateObject(8355, 0, 0.00, -7.0, 90.00, 180.00, 0.00); // podloga
-	this->objects[floor]->setTexture("woodfloor1");
-	int ceiling = this->CreateObject(8355, 0, 4.00, -7.0, 90.00, 180.00, 0.00); // sufit
+	//
+	
+	int ceiling = this->CreateObject(8355, 0, 2, 0, 180, 0.00, 0.00); // sufit
 	this->objects[ceiling]->setTexture("beige_64");
-	int wall1 = this->CreateObject(8355, 0, 0.00, 10, 0.00, 0.00, 0.00); // sciana
-	int wall2 = this->CreateObject(8355, 10, 0.00, -7, 0.00, 0.00, 90.00); // sciana
-	int wall3 = this->CreateObject(8355, -10, 0.00, -7, 0.00, 0.00, 90.00); // sciana
-	int wall4 = this->CreateObject(8355, 0, 0.00, -15, 0.00, 0.00, 180.00); // sciana
+	int floor = this->CreateObject(8355, 0, -2, 0, 0.00, 0.00, 0.00); // podloga
+	this->objects[floor]->setTexture("woodfloor1");
+	int wall1 = this->CreateObject(8355, 0, -2, 7, 90, 0, 180); // sciana
+	int wall2 = this->CreateObject(8355, 0, -2, -7, 90, 0, 0); // sciana
+	int wall3 = this->CreateObject(8355, -20, -2, 0, 90, 0, -90); // sciana
+	int wall4 = this->CreateObject(8355, 20, -2, 0, 90, 0, 90); // sciana
+	//int wall3 = this->CreateObject(8355,  10, 0.00,   0, 0.00, 0.00,  90.00); // sciana
+	//int wall4 = this->CreateObject(8355, -10, 0.00,   0, 90.00,   0.00,  90.00); // sciana
+	
 	this->objects[wall1]->setTexture("bank_wall1");
 	this->objects[wall2]->setTexture("bank_wall1");
 	this->objects[wall3]->setTexture("bank_wall1");
 	this->objects[wall4]->setTexture("bank_wall1");
-
-	//this->CreateObject(8355, 0.7387, 0.00, 48.976, 0.00, 0.00, 0.00);
-	/*this->CreateObject(8355, 9.4387, 14.00, 40.816, 0.00, 0.00, -90.00);
-	this->CreateObject(8355, -7.9313, 14.00, 48.926, 0.00, 0.00, 90.00);
-	this->CreateObject(8355, 0.7587, 10.00, -18.784, 90.00, 90.00, 90.00);
-	this->CreateObject(8355, -0.9413, 10.00, 5.156, 90.00, -90.00, 90.00);
-	this->CreateObject(8355, -5.6413, 10.00, 32.576, 0.00, 0.00, 180.00);
-	*/
-	//this->CreateObject(2631, -32.8113, 14.49, 67.376, 0.00, 0.00, 0.00);
-	//this->CreateObject(2631, 0.7587, 0.00, -19.924, 0.00, 0.00, 90.00);
-	//this->CreateObject(2631, 0.7587, 0.00, -16.024, 0.00, 0.00, 90.00);
 	
-	this->CreateObject(2631, 0.7587, 0.00, 7.306, 0.00, 0.00, 90.00);
-	this->CreateObject(2631, 0.7587, 0.00, 3.356, 0.00, 0.00, 90.00);
-	this->CreateObject(2631, 0.7587, 0.00, -0.594, 0.00, 0.00, 90.00);
-	this->CreateObject(2631, 0.7587, 0.00, -4.544, 0.00, 0.00, 90.00);
-	this->CreateObject(2631, 0.7587, 0.00, -8.494, 0.00, 0.00, 90.00);
-	this->CreateObject(2631, 0.7587, 0.00, -12.444, 0.00, 0.00, 90.00);
+	// g³ówna dywanologia
+	for (int i = -16; i <= 16; i += 4) {
+		this->CreateObject(2631, i, -1.95, 0, 90.00, 0.00, 0.00);
+	}
+	
+	// dywany boczne
+	int multipliers[] = { -1, 1 };
+	for (int i = 0; i < 4; i++) { // ilosc dywanów
+		for (int j = 0; j < 2; j++) { // lewo prawo
+			for (int k = 0; k < 2; k++) { // obie strony g³ownej œcie¿ki
+				this->CreateObject(2631, multipliers[j] * 5.5 * i, -1.95, multipliers[k] * 3, 90.00, 0.00, 90.00);
+				this->CreateObject(2631, multipliers[j] * 5.5 * i, -1.95, multipliers[k] * (3 + 4), 90.00, 0.00, 90.00);
+				this->CreateObject(1271, multipliers[j] * 5.5 * i, -1.5,  multipliers[k] * (3 + 3), 0.00, 0.00, 0.00);
+			}
+		}
+	}
 
 
-	this->CreateObject(2631, 3.6787, 0.00, -12.134, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, 7.6287, 0.00, -12.144, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, 3.6787, 0.00, -4.344, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, 7.6287, 0.00, -4.344, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, 3.6787, 0.00, 3.416, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, 7.6287, 0.00, 3.416, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, 3.6787, 0.00, -8.224, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, 3.6787, 0.00, -0.484, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, 7.6287, 0.00, -8.224, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, 7.6287, 0.00, -0.484, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, -2.2013, 0.00, 3.416, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, -6.1513, 0.00, 3.416, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, -2.2013, 0.00, -0.484, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, -6.1513, 0.00, -0.484, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, -2.2013, 0.00, -4.344, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, -6.1513, 0.00, -4.344, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, -2.2013, 0.00, -8.224, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, -6.1513, 0.00, -8.224, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, -2.2013, 0.00, -12.134, 0.00, 0.00, 0.00);
-	this->CreateObject(2631, -6.1513, 0.00, -12.134, 0.00, 0.00, 0.00);
+	/*
+
 	
 
 	this->CreateObject(1271, 7.7587, 0.37, 3.246, 0.00, 0.00, 0.00);
@@ -91,8 +76,8 @@ Map::Map()
 	this->CreateObject(1669, 7.7587, 0.90, -0.504, 0.00, 0.00, 0.00);
 	this->CreateObject(1544, 7.7587, 0.70, -4.254, 0.00, 0.00, 0.00);
 	this->CreateObject(19824, 7.7587, 0.75, -8.254, 0.00, 0.00, 0.00);
-	this->CreateObject(19823, 7.7587, 0.70, -12.114, 0.00, 0.00, 90.00);
-
+	this->CreateObject(19823, 7.7587, 0.70, -12.114, 0.00, 0.00, 90.00);*/
+	
 }
 
 std::string Map::getModelName(int modelID)
@@ -107,7 +92,7 @@ int Map::CreateObject(int modelid, float x, float y, float z, float rx, float ry
 	this->objects.push_back(new RWModel(this->getModelName(modelid), modelid));
 	int index = this->objects.size() - 1;
 	this->objects[index]->setPosition(x, y, z);
-	this->objects[index]->setRotation(rx-90, ry, rz);
+	this->objects[index]->setRotation(rx, ry, rz);
 	return index;
 }
 

@@ -12,7 +12,7 @@ Game& Game::getInstance()
 Game::Game()
 {
 	this->x = 0,
-	this->y = 1,
+	this->y = 0,
 	this->z = 0,
 	this->angle = 0,
 	this->angle_direction = 0,
@@ -85,6 +85,7 @@ void Game::timePassed(float timeDifferrence)
 	this->updatePosition(timeDifferrence);
 	this->spinBottles(timeDifferrence);
 	this->updateVMatrix();
+	printf("%f, %f, %f\n", this->x, this->y, this->z);
 }
 
 void Game::updateVMatrix()

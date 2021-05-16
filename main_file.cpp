@@ -103,14 +103,14 @@ void drawScene(GLFWwindow* window, Game* game) {
 			}
 
 			// textures
-			glEnableVertexAttribArray(spLambertTextured->a("texCoord"));
-			glVertexAttribPointer(spLambertTextured->a("texCoord"), 2, GL_FLOAT, false, 0, object->texCoords);
+			glEnableVertexAttribArray(spLambertTextured->a("texCoord0"));
+			glVertexAttribPointer(spLambertTextured->a("texCoord0"), 2, GL_FLOAT, false, 0, object->texCoords);
 
-			glUniform4f(spLambertTextured->u("lp"), 0, 9, 0, 1);
-			//glUniform1i(spLambertTextured->u("textureMap0"), 0);
+			glUniform4f(spLambertTextured->u("lp"), 0, 0, 0, 1);
+			glUniform1i(spLambertTextured->u("textureMap0"), 0);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, *(object->texture));
-			glUniform1i(spLambertTextured->u("tex"), 0);
+			//glUniform1i(spLambertTextured->u("tex"), 0);
 
 			glDrawElements(
 				GL_TRIANGLES,
@@ -123,7 +123,7 @@ void drawScene(GLFWwindow* window, Game* game) {
 			if (object->hasNormals) {
 				glDisableVertexAttribArray(spLambertTextured->a("normal"));
 			}
-			glDisableVertexAttribArray(spLambertTextured->a("texCoord"));
+			glDisableVertexAttribArray(spLambertTextured->a("texCoord0"));
 		}
 	}
 	glfwSwapBuffers(window); // swap front and back buffers
