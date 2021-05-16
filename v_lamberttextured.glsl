@@ -5,25 +5,25 @@ uniform mat4 P;
 uniform mat4 V;
 uniform mat4 M;
 
-
-uniform vec4 lightDir=vec4(0,-0.5,1,0);
-
 //Atrybuty
-layout (location=0) in vec4 vertex; //wspolrzedne wierzcholka w przestrzeni modelu
-layout (location=1) in vec4 normal; //wektor normalny w wierzcholku
-layout (location=2) in vec2 texCoord; //wspó³rzêdne teksturowania
-
+in vec4 vertex; //wspolrzedne wierzcholka w przestrzeni modelu
+//in vec4 color; //kolor zwi¹zany z wierzcho³kiem
+in vec4 normal; //wektor normalny w przestrzeni modelu
 
 //Zmienne interpolowane
-out vec2 i_tc;
-out float i_nl;
+out vec4 ic;
+out vec4 l;
+out vec4 n;
+out vec4 v;
 
 void main(void) {
+    vec4 color = vec4(0.2, 1, 0.2, 1);
+    vec4 lp = vec4(0, 0, -6, 1); //pozcyja œwiat³a, przestrzeñ œwiata
+    l = normalize(V * lp - V*M*vertex); //wektor do œwiat³a w przestrzeni oka
+    v = normalize(vec4(0, 0, 0, 1) - V * M * vertex); //wektor do obserwatora w przestrzeni oka
+    n = normalize(V * M * normal); //wektor normalny w przestrzeni oka
+    
+    ic = color;
+    
     gl_Position=P*V*M*vertex;
-
-    mat4 G=mat4(inverse(transpose(mat3(M))));
-    vec4 n=normalize(V*G*normal);
-
-    i_nl=clamp(dot(n,lightDir),0,1);
-    i_tc=texCoord;
 }

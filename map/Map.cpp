@@ -18,7 +18,7 @@ Map::Map()
 	}
 	//this->CreateObject(12920, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
 	// 
-	int floor = this->CreateObject(8355, 0, 0.00, -7.0, 90.00, 0.00, 0.00); // podloga
+	int floor = this->CreateObject(8355, 0, 0.00, -7.0, 90.00, 180.00, 0.00); // podloga
 	this->objects[floor]->setTexture("woodfloor1");
 	int ceiling = this->CreateObject(8355, 0, 4.00, -7.0, 90.00, 180.00, 0.00); // sufit
 	this->objects[ceiling]->setTexture("beige_64");

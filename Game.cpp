@@ -12,8 +12,8 @@ Game& Game::getInstance()
 Game::Game()
 {
 	this->x = 0,
-	this->y = 0,
-	this->z = -1.5f,
+	this->y = 1,
+	this->z = 0,
 	this->angle = 0,
 	this->angle_direction = 0,
 	this->direction_forward = 0,
