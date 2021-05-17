@@ -40,6 +40,19 @@ Map::Map()
 		this->CreateObject(2631, i, -1.95, 0, 90.00, 0.00, 0.00);
 	}
 	
+	int bottleModelIDs[] = { 19822,
+	19821,
+	19820,
+	1509,
+	1512,
+	1517,
+	1669,
+	1544,
+	19824,
+	19823 };
+	int bottleIndex = 0;
+	int bottlesArraySize = sizeof(bottleModelIDs) / sizeof(int);
+
 	// dywany boczne
 	int multipliers[] = { -1, 1 };
 	for (int i = 0; i < 4; i++) { // ilosc dywanów

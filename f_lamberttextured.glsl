@@ -22,7 +22,7 @@ void main(void) {
 
 	//Parametry powierzchni
 	vec4 kd = texture(textureMap0, iTexCoord0);
-	vec4 ks = vec4(1, 1, 1, 1);
+	vec4 ks = kd;
 
 	//Obliczenie modelu oœwietlenia
 	float nl = clamp(dot(mn, ml), 0, 1);

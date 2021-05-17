@@ -110,14 +110,17 @@ void drawScene(GLFWwindow* window, Game* game) {
 			glUniform1i(spLambertTextured->u("textureMap0"), 0);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, *(object->texture));
-			//glUniform1i(spLambertTextured->u("tex"), 0);
-
-			glDrawElements(
-				GL_TRIANGLES,
-				object->vertexIndicesCount * 3,
-				GL_UNSIGNED_INT,
-				object->vertexIndices
-			);
+			if (object->vertexIndicesCount > 0) {
+				glDrawElements(
+					GL_TRIANGLES,
+					object->vertexIndicesCount * 3,
+					GL_UNSIGNED_INT,
+					object->vertexIndices
+				);
+			}
+			else {
+				glDrawArrays(GL_TRIANGLES, 0, object->vertexCount);
+			}
 
 			glDisableVertexAttribArray(spLambertTextured->a("vertex"));
 			if (object->hasNormals) {
