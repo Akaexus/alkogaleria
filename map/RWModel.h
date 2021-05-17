@@ -14,6 +14,7 @@ class RWModel
 		int objectsNumber;
 		int modelID;
 		std::string modelName;
+		float box[10];
 		RWObject* objects;
 		//std::map<std::string, RWObject> objects;
 		static RWModel load(std::string modelName, int modelid);
@@ -21,5 +22,6 @@ class RWModel
 		void setRotation(float rx, float ry, float rz);
 		void setRotationRadians(float rx, float ry, float rz);
 		void setTexture(std::string textureName);
+		void setCollision(std::string modelName);
 };
 

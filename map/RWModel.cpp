@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <vector>
+#include <sstream>
 
 using nlohmann::json;
 
@@ -40,6 +41,7 @@ RWModel::RWModel(std::string modelName, int modelid)
 		);
 	}
 	printf("Loaded object %s with texture %s\n", filename.c_str(), this->objects[0].textureName.c_str());
+	
 }
 
 
@@ -75,5 +77,25 @@ void RWModel::setTexture(std::string textureName)
 {
 	for (int index = 0; index < this->objectsNumber; index++) {
 		this->objects[index].setTexture(textureName);
+	}
+}
+
+void RWModel::setCollision(std::string objectName)
+{
+	std::fstream plik;
+	std::string name = this->modelName;
+	name += ".cst";
+	plik.open(name.c_str(), std::ios::in);
+	std::string line1, line2, token;
+	int iter = 0;
+	while (std::getline(plik, line1)) {
+		if (line1[0] == '#' || line1[0] == 'C' || line1.length() == 0)
+			continue;
+		getline(plik, line2);
+		std::stringstream ss(line2);
+		while (std::getline(ss, token, ',')) {
+			std::istringstream(token) >> this->box[iter];
+			iter++;
+		}
 	}
 }
