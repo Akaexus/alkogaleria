@@ -25,8 +25,8 @@ Map::Map()
 	this->objects[floor]->setTexture("woodfloor1");
 	int wall1 = this->CreateObject(8355, 0, -2, 7, 90, 0, 180); // sciana
 	int wall2 = this->CreateObject(8355, 0, -2, -7, 90, 0, 0); // sciana
-	int wall3 = this->CreateObject(8355, -20, -2, 0, 90, 0, -90); // sciana
-	int wall4 = this->CreateObject(8355, 20, -2, 0, 90, 0, 90); // sciana
+	int wall3 = this->CreateObject(8356, -20, -2, 0, -90, 0, -90); // sciana
+	int wall4 = this->CreateObject(8356, 20, -2, 0, -90, 0, 90); // sciana
 	//int wall3 = this->CreateObject(8355,  10, 0.00,   0, 0.00, 0.00,  90.00); // sciana
 	//int wall4 = this->CreateObject(8355, -10, 0.00,   0, 90.00,   0.00,  90.00); // sciana
 	
