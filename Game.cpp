@@ -26,7 +26,8 @@ Game::Game()
 	this->updatePerspectiveMatrix();
 
 	// grab bottle ids
-	int bottleModelIDs[] = { 19822,
+	int bottleModelIDs[] = {
+		19822,
 		19821,
 		19820,
 		1509,
@@ -35,7 +36,8 @@ Game::Game()
 		1669,
 		1544,
 		19824,
-		19823 };
+		19823
+	};
 	for (int objectIndex = 0; objectIndex < this->map->objects.size(); objectIndex++) {
 		for (int i = 0; i < sizeof(bottleModelIDs) / sizeof(int); i++) {
 			if (this->map->objects[objectIndex]->modelID == bottleModelIDs[i]) {
@@ -85,7 +87,6 @@ void Game::timePassed(float timeDifferrence)
 	this->updatePosition(timeDifferrence);
 	this->spinBottles(timeDifferrence);
 	this->updateVMatrix();
-	printf("%f, %f, %f\n", this->x, this->y, this->z);
 }
 
 void Game::updateVMatrix()

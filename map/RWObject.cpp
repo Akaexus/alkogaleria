@@ -142,7 +142,7 @@ void RWObject::initializeGeometry(nlohmann::json geometry)
 	this->boundingSphere[2] = -this->boundingSphere[2];
 
 	// calculate normals if they are not defined in json file
-	if (!this->hasNormals) {
+	if (!this->hasNormals && 0) {
 		for (int i = 0; i < this->vertexIndicesCount; i++) {
 			int Aindex = this->vertexIndices[3 * i + 0];
 			int Bindex = this->vertexIndices[3 * i + 1];
