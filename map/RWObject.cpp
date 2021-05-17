@@ -92,6 +92,7 @@ void RWObject::initializeGeometry(nlohmann::json geometry)
 		for (int coordIndex = 0; coordIndex < 3; coordIndex++) {
 			this->vertices[4 * vertexIndex + coordIndex] = geometry["vertexInformation"][vertexIndex][coordIndex];
 		}
+		this->vertices[4 * vertexIndex + 2] = -this->vertices[4 * vertexIndex + 2];
 		this->vertices[4 * vertexIndex + 3] = 1.0f;
 
 		// NORMALS
@@ -99,6 +100,7 @@ void RWObject::initializeGeometry(nlohmann::json geometry)
 			for (int coordIndex = 0; coordIndex < 3; coordIndex++) {
 				this->normals[4 * vertexIndex + coordIndex] = geometry["normalInformation"][vertexIndex][coordIndex];
 			}
+			this->normals[4 * vertexIndex + 2] = -this->normals[4 * vertexIndex + 2];
 			this->normals[4 * vertexIndex + 3] = 0.0f;
 		}
 
@@ -137,6 +139,7 @@ void RWObject::initializeGeometry(nlohmann::json geometry)
 	for (int i = 0; i < 4; i++) {
 		this->boundingSphere[i] = geometry["boundingSphere"][i];
 	}
+	this->boundingSphere[2] = -this->boundingSphere[2];
 
 	// calculate normals if they are not defined in json file
 	if (!this->hasNormals) {
