@@ -62,6 +62,7 @@ void Game::updatePosition(float timeDifferrence)
 	this->x += (glm::sin(this->angle) * this->direction_forward + glm::cos(this->angle) * direction_side) * timeDifferrence;
 	this->y += this->direction_vertical * timeDifferrence;
 	this->z += (glm::sin(this->angle + 0.5 * PI) * this->direction_forward + glm::cos(this->angle + 0.5 * PI) * this->direction_side) * timeDifferrence;
+	printf("%f, %f, %f\n", this->x, this->y, this->z);
 }
 
 void Game::spinBottles(float timeDifference)
