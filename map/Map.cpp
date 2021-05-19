@@ -6,8 +6,8 @@ std::map<std::string, GLuint> Map::textures;
 
 Map::Map() :
 	lightSources{
-		17.0, 1.2, 0.0, 1.0,
-		-17.0, 1.2, 0.0, 1.0,
+		10.0, 1.2, 0.0, 1.0,
+		-10.0, 1.2, 0.0, 1.0,
 	}
 {
 	std::ifstream infile("map/objects.ide");
@@ -30,10 +30,10 @@ Map::Map() :
 	int wall3 = this->CreateObject(8356, -20, -2, 0, -90, 0, -90); // sciana
 	int wall4 = this->CreateObject(8356, 20, -2, 0, -90, 0, 90); // sciana
 
-	this->objects[wall1]->setTexture("bank_wall1");
-	this->objects[wall2]->setTexture("bank_wall1");
-	this->objects[wall3]->setTexture("bank_wall1");
-	this->objects[wall4]->setTexture("bank_wall1");
+	this->objects[wall1]->setTexture("conc_slabgrey_256128");
+	this->objects[wall2]->setTexture("conc_slabgrey_256128");
+	this->objects[wall3]->setTexture("conc_slabgrey_256128");
+	this->objects[wall4]->setTexture("conc_slabgrey_256128");
 
 	// g³ówna dywanologia
 	for (int i = -16; i <= 16; i += 4) {
