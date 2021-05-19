@@ -142,22 +142,26 @@ void RWObject::initializeGeometry(nlohmann::json geometry)
 	this->boundingSphere[2] = -this->boundingSphere[2];
 
 	// calculate normals if they are not defined in json file
-	if (!this->hasNormals && 0) {
+	if (!this->hasNormals) {
 		for (int i = 0; i < this->vertexIndicesCount; i++) {
 			int Aindex = this->vertexIndices[3 * i + 0];
 			int Bindex = this->vertexIndices[3 * i + 1];
 			int Cindex = this->vertexIndices[3 * i + 2];
+			int faceIndexes[] = { Aindex, Bindex, Cindex };
 			glm::vec3 A = glm::vec3(this->vertices[4 * Aindex + 0], this->vertices[4 * Aindex + 1], this->vertices[4 * Aindex + 2]);
 			glm::vec3 B = glm::vec3(this->vertices[4 * Bindex + 0], this->vertices[4 * Bindex + 1], this->vertices[4 * Bindex + 2]);
 			glm::vec3 C = glm::vec3(this->vertices[4 * Cindex + 0], this->vertices[4 * Cindex + 1], this->vertices[4 * Cindex + 2]);
-			glm::vec3 a = B - A;
-			glm::vec3 b = C - A;
-			glm::vec3 n = glm::normalize(glm::cross(a, b));
-			for (int coordIndex = 0; coordIndex < 3; coordIndex++) {
-				this->normals[4 * vertexIndicesCount + coordIndex] = n[coordIndex];
+			glm::vec3 n = glm::normalize(glm::cross(B-A, C-A));
+
+			for (int i = 0; i < sizeof(faceIndexes) / sizeof(*faceIndexes); i++) {
+				for (int coordIndex = 0; coordIndex < 3; coordIndex++) {
+					this->normals[4 * faceIndexes[i] + coordIndex] = n[coordIndex];
+				}
+				this->normals[4 * faceIndexes[i] + 3] = 0.0f;
 			}
-			this->normals[4 * vertexIndicesCount + 3] = 0.0f;
+
 			this->hasNormals = true;
+			
 		}
 
 	}
