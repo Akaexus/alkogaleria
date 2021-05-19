@@ -4,7 +4,7 @@
 uniform mat4 P;
 uniform mat4 V;
 uniform mat4 M;
-//uniform vec4 lp;
+uniform vec4 lp[2];
 //Atrybuty
 in vec4 vertex; //wspolrzedne wierzcholka w przestrzeni modelu
 //in vec4 color; //kolor zwi¹zany z wierzcho³kiem
@@ -20,7 +20,7 @@ out vec2 iTexCoord0;
 
 void main(void) {
     vec4 color = vec4(0.2, 1, 0.2, 1);
-    vec4 lp[2] = {vec4(17, 1.2, 0, 1), vec4(-17, 1.2, 0, 1)};
+    //vec4 lp[2] = {vec4(17, 1.2, 0, 1), vec4(-17, 1.2, 0, 1)};
     l[0] = normalize(V * lp[0] - V*M*vertex); //wektor do œwiat³a w przestrzeni oka
     l[1] = normalize(V * lp[1] - V*M*vertex); //wektor do œwiat³a w przestrzeni oka
     v = normalize(vec4(0, 0, 0, 1) - V * M * vertex); //wektor do obserwatora w przestrzeni oka

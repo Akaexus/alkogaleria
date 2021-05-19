@@ -14,6 +14,7 @@ class Map
 		std::string getModelName(int modelID);
 		int CreateObject(int modelid, float x, float y, float z, float rx, float ry, float rz); // @see https://sampwiki.blast.hk/wiki/CreateObject
 		int CreateObject(int modelid, float x, float y, float z, float rx, float ry, float rz, std::string handler);
+		float lightSources[];
 
 
 };

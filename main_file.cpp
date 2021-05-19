@@ -92,6 +92,7 @@ void drawScene(GLFWwindow* window, Game* game) {
 			
 			
 			glUniformMatrix4fv(spLambertTextured->u("M"), 1, false, glm::value_ptr(M)); // load model matrix
+			glUniform4fv(spLambertTextured->u("lp"), 2, game->map->lightSources); // load model matrix
 			// vertices
 			glEnableVertexAttribArray(spLambertTextured->a("vertex"));
 			glVertexAttribPointer(spLambertTextured->a("vertex"), 4, GL_FLOAT, false, 0, object->vertices);
