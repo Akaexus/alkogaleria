@@ -67,34 +67,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="f_constant.glsl">
+    <None Include="f_phong.glsl">
       <Filter>Pliki zasobów</Filter>
     </None>
-    <None Include="f_lambert.glsl">
-      <Filter>Pliki zasobów</Filter>
-    </None>
-    <None Include="v_constant.glsl">
-      <Filter>Pliki zasobów</Filter>
-    </None>
-    <None Include="v_lambert.glsl">
-      <Filter>Pliki zasobów</Filter>
-    </None>
-    <None Include="f_colored.glsl">
-      <Filter>Pliki zasobów</Filter>
-    </None>
-    <None Include="f_lamberttextured.glsl">
-      <Filter>Pliki zasobów</Filter>
-    </None>
-    <None Include="f_textured.glsl">
-      <Filter>Pliki zasobów</Filter>
-    </None>
-    <None Include="v_colored.glsl">
-      <Filter>Pliki zasobów</Filter>
-    </None>
-    <None Include="v_lamberttextured.glsl">
-      <Filter>Pliki zasobów</Filter>
-    </None>
-    <None Include="v_textured.glsl">
+    <None Include="v_phong.glsl">
       <Filter>Pliki zasobów</Filter>
     </None>
     <None Include="packages.config" />
