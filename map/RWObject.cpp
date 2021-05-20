@@ -108,6 +108,9 @@ void RWObject::initializeGeometry(nlohmann::json geometry)
 		if (this->hasTextures) {
 			for (int coordIndex = 0; coordIndex < 2; coordIndex++) {
 				this->texCoords[2 * vertexIndex + coordIndex] = geometry["textureMappingInformation"][vertexIndex][coordIndex];
+				if (coordIndex == 0) {
+					this->texCoords[2 * vertexIndex + coordIndex] = 1 - this->texCoords[2 * vertexIndex + coordIndex];
+				}
 			}
 		}
 
