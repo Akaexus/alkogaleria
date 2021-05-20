@@ -71,7 +71,7 @@ Map::Map() :
 
 	float distanceBetween = 5.5;
 	float sideDistance = 3;
-	int carpetsNumber = 4;
+	int carpetsNumber = 3;
 	int sides[] = { -1, 1 };
 
 	for (float x = -carpetsNumber * distanceBetween; x <= carpetsNumber * distanceBetween; x += distanceBetween) {

@@ -29,6 +29,11 @@ class Game
 			direction_forward = 0,
 			direction_side = 0,
 			direction_vertical;
+	// MISC
+	public:
+		float alcoholLevel = 0;
+		float itemUseDistance = 1.0f;
+		float soberingSpeed = 0.005f;
 	// OPENGL
 	public:
 		glm::mat4 P; // perspective matrix
@@ -47,13 +52,12 @@ class Game
 		static void keyCallback_handler(GLFWwindow* window, int key, int scancode, int action, int mod);
 		void timePassed(float timeDifferrence);
 		void updatePosition(float timeDifferrence);
+		void sobering(float timeDifferrence);
 		void spinBottles(float timeDifference);
 		void updateVMatrix();
 		void updatePerspectiveMatrix();
 		static void windowResizeCallback_handler(GLFWwindow* window, int width, int height);
 		void windowResizeCallback(GLFWwindow* window, int width, int height);
-		
-
-
+		void useItem();
 };
 

@@ -15,6 +15,7 @@ class RWModel
 		int modelID;
 		std::string modelName;
 		float box[10];
+		float x, y, z = 0;
 		RWObject* objects;
 		//std::map<std::string, RWObject> objects;
 		static RWModel load(std::string modelName, int modelid);

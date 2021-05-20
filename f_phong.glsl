@@ -1,6 +1,8 @@
 #version 330
 
 uniform sampler2D textureMap0;
+uniform vec4 lp[2];
+uniform mat4 M;
 
 out vec4 pixelColor; //Zmienna wyjsciowa fragment shadera. Zapisuje sie do niej ostateczny (prawie) kolor piksela
 
@@ -8,11 +10,13 @@ in vec4 ic;
 in vec4 n;
 in vec4 l[2];
 in vec4 v;
-
+in vec4 iVert;
 in vec2 iTexCoord0;
 
 void main(void) {
-
+	// https://wp.faculty.wmi.amu.edu.pl/GRK5E.pdf
+	vec4 lightColors[2] = {vec4(0.8f, 0.8f, 0.8f, 1.0f), vec4(0.8f, 0.8f, 0.8f, 1.0f)};
+	float pointLightSize = 12.0f;
 	pixelColor = vec4(0);
 	//Znormalizowane interpolowane wektory
 	vec4 mn = normalize(n);
@@ -41,6 +45,8 @@ void main(void) {
 		//Obliczenie modelu oœwietlenia
 		nl[i] = clamp(dot(mn, ml[i]), 0, 1);
 		rv[i] = pow(clamp(dot(mr[i], mv), 0, 1), 300);
-		pixelColor += vec4(kd.rgb * nl[i], kd.a) + vec4(ks.rgb*rv[i], 0);
+		float dist = distance(lp[i], M * iVert);
+		float facct = sin(1 - clamp(dist / pointLightSize, 0, 0.95)) + 0.05;
+		pixelColor += lightColors[i] * facct * vec4(kd.rgb * nl[i], kd.a) + vec4(ks.rgb*rv[i], 0);
 	}
 }

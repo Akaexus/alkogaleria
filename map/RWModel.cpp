@@ -53,6 +53,9 @@ RWModel RWModel::load(std::string modelName, int modelid)
 
 void RWModel::setPosition(float x, float y, float z)
 {
+	this->x = x;
+	this->y = y;
+	this->z = z;
 	for (int index = 0; index < this->objectsNumber; index++) {
 		this->objects[index].setPosition(x, y, z);
 	}

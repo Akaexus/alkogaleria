@@ -17,6 +17,7 @@ out vec4 l[2];
 out vec4 n;
 out vec4 v;
 out vec2 iTexCoord0;
+out vec4 iVert;
 
 void main(void) {
     vec4 color = vec4(0.2, 1, 0.2, 1);
@@ -25,6 +26,8 @@ void main(void) {
     l[1] = normalize(V * lp[1] - V*M*vertex); //wektor do œwiat³a w przestrzeni oka
     v = normalize(vec4(0, 0, 0, 1) - V * M * vertex); //wektor do obserwatora w przestrzeni oka
     n = normalize(V * M * normal); //wektor normalny w przestrzeni oka
+    iVert = vertex;
+    
     
     iTexCoord0 = texCoord0;
 

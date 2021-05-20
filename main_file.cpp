@@ -107,7 +107,6 @@ void drawScene(GLFWwindow* window, Game* game) {
 			glEnableVertexAttribArray(spPhong->a("texCoord0"));
 			glVertexAttribPointer(spPhong->a("texCoord0"), 2, GL_FLOAT, false, 0, object->texCoords);
 
-			glUniform4f(spPhong->u("lp"), 12, 0, 0, 1);
 			glUniform1i(spPhong->u("textureMap0"), 0);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, *(object->texture));

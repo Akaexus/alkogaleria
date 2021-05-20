@@ -62,13 +62,34 @@ void Game::updatePosition(float timeDifferrence)
 	this->x += (glm::sin(this->angle) * this->direction_forward + glm::cos(this->angle) * direction_side) * timeDifferrence;
 	this->y += this->direction_vertical * timeDifferrence;
 	this->z += (glm::sin(this->angle + 0.5 * PI) * this->direction_forward + glm::cos(this->angle + 0.5 * PI) * this->direction_side) * timeDifferrence;
-	printf("%f, %f, %f\n", this->x, this->y, this->z);
 }
 
 void Game::spinBottles(float timeDifference)
 {
 	for (int i = 0; i < this->bottleHandlers.size(); i++) {
 		this->bottleHandlers[i]->setRotationRadians(0, 0, timeDifference * BOTTLE_ROTATION_SPEED);
+	}
+}
+
+void Game::useItem()
+{
+	// alcohol
+	for (int i = 0; i < this->bottleHandlers.size(); i++) {
+		float distance = sqrt(pow((this->bottleHandlers[i]->x - this->x), 2) +
+			pow((this->bottleHandlers[i]->y - this->y), 2) +
+			pow((this->bottleHandlers[i]->z - this->z), 2));
+		if (distance <= this->itemUseDistance) {
+			this->alcoholLevel += 0.2;
+			printf("alkus\n");
+		}
+	}
+		
+}
+void Game::sobering(float timeDifferrence)
+{
+	printf("%f\n", this->alcoholLevel);
+	if (this->alcoholLevel > 0) {
+		this->alcoholLevel = std::max(0.0f, this->alcoholLevel - this->soberingSpeed * timeDifferrence);
 	}
 }
 /// <summary>
@@ -88,6 +109,8 @@ void Game::timePassed(float timeDifferrence)
 	this->updatePosition(timeDifferrence);
 	this->spinBottles(timeDifferrence);
 	this->updateVMatrix();
+	this->sobering(timeDifferrence);
+
 }
 
 void Game::updateVMatrix()
@@ -109,50 +132,67 @@ void Game::updateVMatrix()
 /// <param name="mod"></param>
 void Game::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mod) {
 	if (action == GLFW_PRESS) {
-		if (key == GLFW_KEY_KP_4) {
-			this->angle_direction = PLAYER_ROTATION_SPEED;
-		}
-		else if (key == GLFW_KEY_KP_6) {
-			this->angle_direction = -PLAYER_ROTATION_SPEED;
-		}
 
-		if (key == GLFW_KEY_W) {
-			
-			this->direction_forward = PLAYER_SPEED;
-		}
-		else if (key == GLFW_KEY_S) {
-			this->direction_forward = -PLAYER_SPEED;
-		}
+		switch (key) {
+			// USE ELEMENT
+			case GLFW_KEY_E:
+				this->useItem();
+				break;
 
-		if (key == GLFW_KEY_A) {
-			this->direction_side = PLAYER_SPEED;
-		}
-		else if (key == GLFW_KEY_D) {
-			this->direction_side = -PLAYER_SPEED;
-		}
 
-		if (key == GLFW_KEY_LEFT_SHIFT) {
-			this->direction_vertical = PLAYER_SPEED;
-		}
-		else if (key == GLFW_KEY_LEFT_CONTROL) {
-			this->direction_vertical = -PLAYER_SPEED;
+			// ANGLE
+			case GLFW_KEY_KP_4:
+				this->angle_direction = PLAYER_ROTATION_SPEED;
+				break;
+			case GLFW_KEY_KP_6:
+				this->angle_direction = -PLAYER_ROTATION_SPEED;
+				break;
+
+			// HORIZONTAL
+			case GLFW_KEY_W:
+				this->direction_forward = PLAYER_SPEED;
+				break;
+			case GLFW_KEY_S:
+				this->direction_forward = -PLAYER_SPEED;
+				break;
+
+			case GLFW_KEY_A:
+				this->direction_side = PLAYER_SPEED;
+				break;
+			case GLFW_KEY_D:
+				this->direction_side = -PLAYER_SPEED;
+				break;
+
+			// VERTICAL
+			case GLFW_KEY_LEFT_SHIFT:
+				this->direction_vertical = PLAYER_SPEED;
+				break;
+			case GLFW_KEY_LEFT_CONTROL:
+				this->direction_vertical = -PLAYER_SPEED;
+				break;
 		}
 	}
 	if (action == GLFW_RELEASE) {
-		if (key == GLFW_KEY_KP_4 || key == GLFW_KEY_KP_6) {
-			this->angle_direction = 0;
-		}
+		switch (key) {
+			case GLFW_KEY_KP_4:
+			case GLFW_KEY_KP_6:
+				this->angle_direction = 0;
+				break;
 
-		if (key == GLFW_KEY_W || key == GLFW_KEY_S) {
-			this->direction_forward = 0;
-		}
+			case GLFW_KEY_W:
+			case GLFW_KEY_S:
+				this->direction_forward = 0;
+				break;
 
-		if (key == GLFW_KEY_D || key == GLFW_KEY_A) {
-			this->direction_side = 0;
-		}
+			case GLFW_KEY_A:
+			case GLFW_KEY_D:
+				this->direction_side = 0;
+				break;
 
-		if (key == GLFW_KEY_LEFT_CONTROL || key == GLFW_KEY_LEFT_SHIFT) {
-			this->direction_vertical = 0;
+			case GLFW_KEY_LEFT_CONTROL:
+			case GLFW_KEY_LEFT_SHIFT:
+				this->direction_vertical = 0;
+				break;
 		}
 	}
 }
