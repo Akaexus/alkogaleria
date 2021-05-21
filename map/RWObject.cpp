@@ -207,6 +207,15 @@ void RWObject::setTexture(std::string textureName)
 		Map::textures[textureName] = this->readTexture(textureName);
 	}
 	this->texture = &Map::textures[textureName];
+
+	std::string specular = textureName + "_specular";
+
+	// specular
+	std::map<std::string, GLuint>::iterator it2 = Map::textures.find(specular);
+	if (it2 == Map::textures.end()) { // texture was not loaded in shared storage
+		Map::textures[specular] = this->readTexture(specular);
+	}
+	this->texture_specular = &Map::textures[specular];
 }
 
 GLuint RWObject::readTexture(std::string name) {

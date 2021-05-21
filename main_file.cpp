@@ -108,8 +108,11 @@ void drawScene(GLFWwindow* window, Game* game) {
 			glVertexAttribPointer(spPhong->a("texCoord0"), 2, GL_FLOAT, false, 0, object->texCoords);
 
 			glUniform1i(spPhong->u("textureMap0"), 0);
+			glUniform1i(spPhong->u("textureMap1"), 1);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, *(object->texture));
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, *(object->texture_specular));
 			if (object->vertexIndicesCount > 0) {
 				glDrawElements(
 					GL_TRIANGLES,

@@ -6,8 +6,8 @@ std::map<std::string, GLuint> Map::textures;
 
 Map::Map() :
 	lightSources{
-		10.0, 1.2, 0.0, 1.0,
-		-10.0, 1.2, 0.0, 1.0,
+		13.0, 1.4, 0.0, 1.0,
+		-13.0, 1.4, 0.0, 1.0,
 	}
 {
 	std::ifstream infile("map/objects.ide");
@@ -18,6 +18,11 @@ Map::Map() :
 		std::stringstream linestream(line);
 		linestream >> modelID >> modelName;
 		this->assignments[modelID] = modelName;
+	}
+
+	// light boxes
+	for (int i = 0; i < 2; i++) {
+		this->CreateObject(1271, this->lightSources[4*i], this->lightSources[4 * i+1], this->lightSources[4 * i+2], 0, 0, 0);
 	}
 
 
