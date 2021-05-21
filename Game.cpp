@@ -59,9 +59,10 @@ void Game::updatePerspectiveMatrix() {
 void Game::updatePosition(float timeDifferrence)
 {
 	this->angle = fmod(this->angle + this->angle_direction * timeDifferrence, 2 * PI);
-	this->x += (glm::sin(this->angle) * this->direction_forward + glm::cos(this->angle) * direction_side) * timeDifferrence;
+	float fixed_angle = fmod(this->angle - sin(this->alcoholLevel / 3.0f * this->alcoholicAngle) * PI, 2 * PI);
+	this->x += (glm::sin(fixed_angle) * this->direction_forward + glm::cos(fixed_angle) * direction_side) * timeDifferrence;
 	this->y += this->direction_vertical * timeDifferrence;
-	this->z += (glm::sin(this->angle + 0.5 * PI) * this->direction_forward + glm::cos(this->angle + 0.5 * PI) * this->direction_side) * timeDifferrence;
+	this->z += (glm::sin(fixed_angle + 0.5 * PI) * this->direction_forward + glm::cos(fixed_angle + 0.5 * PI) * this->direction_side) * timeDifferrence;
 }
 
 void Game::spinBottles(float timeDifference)
@@ -69,6 +70,12 @@ void Game::spinBottles(float timeDifference)
 	for (int i = 0; i < this->bottleHandlers.size(); i++) {
 		this->bottleHandlers[i]->setRotationRadians(0, 0, timeDifference * BOTTLE_ROTATION_SPEED);
 	}
+}
+
+void Game::alcoholicAngleUpdate(float timeDifference)
+{
+	this->alcoholicAngle = fmod(this->alcoholicAngle + timeDifference * PI , 2 * PI);
+	printf("alcoholicAngle = %f\n", this->alcoholicAngle);
 }
 
 void Game::useItem()
@@ -80,7 +87,6 @@ void Game::useItem()
 			pow((this->bottleHandlers[i]->z - this->z), 2));
 		if (distance <= this->itemUseDistance) {
 			this->alcoholLevel += 0.2;
-			printf("alkus\n");
 		}
 	}
 		
@@ -109,6 +115,7 @@ void Game::timePassed(float timeDifferrence)
 	this->updatePosition(timeDifferrence);
 	this->spinBottles(timeDifferrence);
 	this->updateVMatrix();
+	this->alcoholicAngleUpdate(timeDifferrence);
 	this->sobering(timeDifferrence);
 
 }

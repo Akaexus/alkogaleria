@@ -18,6 +18,7 @@ class Game
 	public:
 		float x, y, z; // positon
 		float angle = 0;
+		float alcoholicAngle = 0;
 		Map* map;
 
 	protected:
@@ -46,6 +47,7 @@ class Game
 	// ============= METHODS ================
 	private:
 		Game();
+		void alcoholicAngleUpdate(float timeDifference);
 	public:
 		static Game& getInstance();
 		void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mod);
