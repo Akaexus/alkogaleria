@@ -35,7 +35,7 @@ class Game
 	// MISC
 	public:
 		float alcoholLevel = 0;
-		float itemUseDistance = 1.0f;
+		float itemUseDistance = 1.5f;
 		float soberingSpeed = 0.005f;
 	// OPENGL
 	public:

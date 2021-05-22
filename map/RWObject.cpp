@@ -8,12 +8,17 @@
 #include <libs/glm/gtc/type_ptr.hpp>
 #include <libs/glm/gtc/matrix_transform.hpp>
 #include <map/Map.h>
+#include <ctime>
+#include <cstdlib>
+#include <constants.h>
 
 const std::string RWObject::modelsLocation = "models";
 
 RWObject::RWObject()
 {
 	this->vertexCount = 0;
+	this->alcoholRandomShift = rand() / (float)RAND_MAX * 0.5 * PI;
+	printf("%f\n", this->alcoholRandomShift);
 }
 
 

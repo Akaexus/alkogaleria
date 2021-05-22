@@ -51,8 +51,6 @@ class RWObject
 		static GLuint readTexture(std::string name);
 		GLuint *texture;
 		GLuint* texture_specular;
-
-
-
+		float alcoholRandomShift = 0;
 };
 

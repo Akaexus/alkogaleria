@@ -90,6 +90,9 @@ void drawScene(GLFWwindow* window, Game* game) {
 			RWObject* object = &(game->map->objects[modelIndex]->objects[objectIndex]);
 			glm::mat4 M = object->M;
 			
+			glUniform1f(spPhong->u("alcoholLevel"), game->alcoholLevel);
+			glUniform1f(spPhong->u("alcoholicAngle"), game->alcoholicCameraAngle);
+			glUniform1f(spPhong->u("alcoholRandomShift"), object->alcoholRandomShift);
 			
 			glUniformMatrix4fv(spPhong->u("M"), 1, false, glm::value_ptr(M)); // load model matrix
 			glUniform4fv(spPhong->u("lp"), 2, game->map->lightSources); // pass light sources

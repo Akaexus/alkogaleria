@@ -11,6 +11,7 @@ Game& Game::getInstance()
 
 Game::Game()
 {
+	srand(time(NULL));
 	this->x = 0,
 	this->y = 0,
 	this->z = 0,
@@ -60,7 +61,6 @@ void Game::updatePosition(float timeDifferrence)
 {
 	this->angle = fmod(this->angle + this->angle_direction * timeDifferrence, 2 * PI);
 	float alcoholicAnglePart = std::clamp(this->alcoholLevel / 3.0f, 0.0f, 1.0f) * sin(this->alcoholicAngle);
-	printf("alcoholicAnglePart = %f\n", sin(this->alcoholicAngle));
 	float fixed_angle = fmod(this->angle - alcoholicAnglePart * PI, 2 * PI);
 	this->x += (glm::sin(fixed_angle) * this->direction_forward + glm::cos(fixed_angle) * direction_side) * timeDifferrence;
 	this->y += this->direction_vertical * timeDifferrence;
