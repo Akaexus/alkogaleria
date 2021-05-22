@@ -18,7 +18,9 @@ class Game
 	public:
 		float x, y, z; // positon
 		float angle = 0;
-		float alcoholicAngle = 0;
+		float alcoholicAngle = 0; // movement
+		float alcoholicCameraAngle = 0;
+
 		Map* map;
 
 	protected:

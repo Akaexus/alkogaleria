@@ -75,6 +75,7 @@ void Game::spinBottles(float timeDifference)
 void Game::alcoholicAngleUpdate(float timeDifference)
 {
 	this->alcoholicAngle = fmod(this->alcoholicAngle + timeDifference * PI , 2 * PI);
+	this->alcoholicCameraAngle = fmod(this->alcoholicCameraAngle + timeDifference * PI, 2 * PI);
 	printf("alcoholicAngle = %f\n", this->alcoholicAngle);
 }
 
@@ -122,8 +123,17 @@ void Game::timePassed(float timeDifferrence)
 
 void Game::updateVMatrix()
 {
+	float camera_amplitude = std::clamp(this->alcoholLevel, 0.0f, 5.0f) / 10;
+	printf("camera_amplitude = %f\n", camera_amplitude);
+	float horizontal_amplitude = cos(this->alcoholicCameraAngle) * camera_amplitude;
+	float vertical_amplitude = sin(this->alcoholicCameraAngle) * camera_amplitude;
+
+	float new_y = this->y + horizontal_amplitude;
+	float new_x = this->x + (glm::sin(this->angle) * vertical_amplitude + glm::cos(this->angle) * vertical_amplitude);
+	float new_z = this->z + (glm::sin(this->angle + 0.5 * PI) * vertical_amplitude + glm::cos(this->angle + 0.5 * PI) * vertical_amplitude);
+
 	this->V = glm::lookAt(
-		glm::vec3(this->x, this->y, this->z), // position
+		glm::vec3(new_x, new_y , new_z), // position
 		glm::vec3(this->x + glm::sin(this->angle), this->y, this->z + glm::cos(this->angle)), // lookat
 		glm::vec3(0.0f, 1.0f, 0.0f) // up vector
 	);
