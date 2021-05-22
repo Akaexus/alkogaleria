@@ -42,12 +42,15 @@ void main(void) {
 	// czêœæ lamberta
 	
 	vec4 kd = texture(textureMap0, iTexCoord0); // kolor materia³u dla œwiat³a rozproszenia
-	kd = vec4(hueShift(kd.rgb, alocoholHueShift), kd.a);
 	// ld - kolor œwiat³a rozporoszonego, domyœlnie bia³y wiec nie ma go we wzorze
 	// ka - kolor materia³u dla œwiat³a otoczenia
 	// la - kolor œwiat³a otoczenia
 	// czêœæ phonga
 	vec4 ks = texture(textureMap1, iTexCoord0); // kolor materia³u dla œwiat³a odbitego ze specular map
+	if (alcoholLevel > 0) {
+		kd = vec4(hueShift(kd.rgb, alocoholHueShift), kd.a);
+		ks = vec4(hueShift(ks.rgb, alocoholHueShift), ks.a);
+	}
 	// ls - kolor œwiat³a odbitego
 	// r - wektor odbitego œwiat³a
 
