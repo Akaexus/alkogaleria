@@ -5,10 +5,15 @@
 std::map<std::string, GLuint> Map::textures;
 
 Map::Map() :
-	lightSources{
+	lightSources {
 		13.0, 1.4, 0.0, 1.0,
 		-13.0, 1.4, 0.0, 1.0,
+	},
+	lightColors{
+		0.4f, 0.7f, 0.1f, 1.0,
+		1.0f, 1.0f, 1.0f, 1.0,
 	}
+
 {
 	std::ifstream infile("map/objects.ide");
 	int modelID;
@@ -19,12 +24,6 @@ Map::Map() :
 		linestream >> modelID >> modelName;
 		this->assignments[modelID] = modelName;
 	}
-
-	// light boxes
-	for (int i = 0; i < 2; i++) {
-		this->CreateObject(1271, this->lightSources[4*i], this->lightSources[4 * i+1], this->lightSources[4 * i+2], 0, 0, 0);
-	}
-
 
 	int ceiling = this->CreateObject(8355, 0, 2, 0, 180, 0.00, 0.00); // sufit
 	this->objects[ceiling]->setTexture("beige_64");

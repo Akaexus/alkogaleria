@@ -76,9 +76,8 @@ void Game::spinBottles(float timeDifference)
 
 void Game::alcoholicAngleUpdate(float timeDifference)
 {
-	this->alcoholicAngle = fmod(this->alcoholicAngle + timeDifference * PI , 2 * PI);
+	this->alcoholicAngle = fmod(this->alcoholicAngle + timeDifference * 1.1 * PI , 2 * PI);
 	this->alcoholicCameraAngle = fmod(this->alcoholicCameraAngle + timeDifference * PI, 2 * PI);
-	printf("alcoholicAngle = %f\n", this->alcoholicAngle);
 }
 
 void Game::useItem()
@@ -96,7 +95,6 @@ void Game::useItem()
 }
 void Game::sobering(float timeDifferrence)
 {
-	printf("%f\n", this->alcoholLevel);
 	if (this->alcoholLevel > 0) {
 		this->alcoholLevel = std::max(0.0f, this->alcoholLevel - this->soberingSpeed * timeDifferrence);
 	}
@@ -120,13 +118,25 @@ void Game::timePassed(float timeDifferrence)
 	this->updateVMatrix();
 	this->alcoholicAngleUpdate(timeDifferrence);
 	this->sobering(timeDifferrence);
-
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	printf(
+		"gamePos: (%.2f, %.2f, %.2f), facing: %.2fdeg\n",
+		this->x,
+		this->y,
+		this->z,
+		this->angle * 180 / PI
+	);
+	printf(
+		"alcohol(level: %.2f, movementAngle: %.2fdeg, cameraAngle: %.2fdeg)\n",
+		this->alcoholLevel,
+		this->alcoholicAngle * 180 / PI,
+		this->alcoholicCameraAngle * 180 / PI
+	);
 }
 
 void Game::updateVMatrix()
 {
 	float camera_amplitude = std::clamp(this->alcoholLevel, 0.0f, 5.0f) / 10;
-	printf("camera_amplitude = %f\n", camera_amplitude);
 	float horizontal_amplitude = cos(this->alcoholicCameraAngle) * camera_amplitude;
 	float vertical_amplitude = sin(this->alcoholicCameraAngle) * camera_amplitude;
 
@@ -156,6 +166,11 @@ void Game::keyCallback(GLFWwindow* window, int key, int scancode, int action, in
 			// USE ELEMENT
 			case GLFW_KEY_E:
 				this->useItem();
+				break;
+			
+			// IMMEDIATE SOBERING UP
+			case GLFW_KEY_R:
+				this->alcoholLevel = 0;
 				break;
 
 

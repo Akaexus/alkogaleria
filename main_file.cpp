@@ -96,6 +96,7 @@ void drawScene(GLFWwindow* window, Game* game) {
 			
 			glUniformMatrix4fv(spPhong->u("M"), 1, false, glm::value_ptr(M)); // load model matrix
 			glUniform4fv(spPhong->u("lp"), 2, game->map->lightSources); // pass light sources
+			glUniform4fv(spPhong->u("lightColors"), 2, game->map->lightColors); // pass light sources
 			// vertices
 			glEnableVertexAttribArray(spPhong->a("vertex"));
 			glVertexAttribPointer(spPhong->a("vertex"), 4, GL_FLOAT, false, 0, object->vertices);

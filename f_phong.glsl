@@ -3,6 +3,7 @@
 uniform sampler2D textureMap0;
 uniform sampler2D textureMap1;
 uniform vec4 lp[2];
+uniform vec4 lightColors[2];
 uniform mat4 M;
 uniform float alcoholLevel;
 uniform float alcoholicAngle;
@@ -27,7 +28,10 @@ vec3 hueShift(vec3 col, float shift){
 
 void main(void) {
 	// https://wp.faculty.wmi.amu.edu.pl/GRK5E.pdf
-	vec4 lightColors[2] = {vec4(0.8f, 0.8f, 0.8f, 1.0f), vec4(0.8f, 0.8f, 0.8f, 1.0f)};
+	/*vec4 lightColors[2] = {
+		vec4(0.4f, 0.7f, 0.1f, 1.0),
+		vec4(0.8f, 0.8f, 0.8f, 1.0f)
+	};*/
 	float pointLightSize = 20.0f;
 	pixelColor = vec4(0);
 	//Znormalizowane interpolowane wektory
@@ -47,10 +51,6 @@ void main(void) {
 	// la - kolor œwiat³a otoczenia
 	// czêœæ phonga
 	vec4 ks = texture(textureMap1, iTexCoord0); // kolor materia³u dla œwiat³a odbitego ze specular map
-	if (alcoholLevel > 0) {
-		kd = vec4(hueShift(kd.rgb, alocoholHueShift), kd.a);
-		ks = vec4(hueShift(ks.rgb, alocoholHueShift), ks.a);
-	}
 	// ls - kolor œwiat³a odbitego
 	// r - wektor odbitego œwiat³a
 
@@ -65,6 +65,10 @@ void main(void) {
 		rv[i] = pow(clamp(dot(mr[i], mv), 0, 1), 25);
 		float dist = distance(lp[i], M * iVert);
 		float facct = sin(1 - clamp(dist / pointLightSize, 0, 0.95)) + 0.05;
-		pixelColor += lightColors[i] * facct * vec4(kd.rgb * nl[i], kd.a) + facct * vec4(ks.rgb*rv[i], 0);
+		pixelColor += facct * lightColors[i] * (vec4(0.1, 0.1, 0.1, 1.0)/*ambient*/ + vec4(kd.rgb * nl[i], kd.a)/*diffuse*/ + vec4(ks.rgb*rv[i], 0) /* specular */);
+	}
+
+	if (alcoholLevel > 0) {
+		pixelColor = vec4(hueShift(pixelColor.rgb, alocoholHueShift), pixelColor.a);
 	}
 }

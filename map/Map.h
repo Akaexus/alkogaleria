@@ -12,9 +12,11 @@ class Map
 		std::map<std::string, RWModel*> object_handlers;
 		Map();
 		std::string getModelName(int modelID);
+		float lightColors[4 * 2];
 		int CreateObject(int modelid, float x, float y, float z, float rx, float ry, float rz); // @see https://sampwiki.blast.hk/wiki/CreateObject
 		int CreateObject(int modelid, float x, float y, float z, float rx, float ry, float rz, std::string handler);
-		float lightSources[];
+		float lightSources[4 * 2];
+		
 
 
 };
