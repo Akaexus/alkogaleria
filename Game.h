@@ -20,8 +20,9 @@ class Game
 		float angle = 0;
 		float alcoholicAngle = 0; // movement
 		float alcoholicCameraAngle = 0;
-
+		float boundry = 1; //player sphere radius
 		Map* map;
+		bool intersection = false;
 
 	protected:
 		float aspectRatio = 16 / 9;
@@ -63,5 +64,6 @@ class Game
 		static void windowResizeCallback_handler(GLFWwindow* window, int width, int height);
 		void windowResizeCallback(GLFWwindow* window, int width, int height);
 		void useItem();
+		void collision();
 };
 

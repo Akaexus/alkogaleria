@@ -14,15 +14,18 @@ class RWModel
 		int objectsNumber;
 		int modelID;
 		std::string modelName;
-		float box[10];
+		float width, length, height;
+		float box[6];
+		float col_x[2], col_y[2], col_z[2];
 		float x, y, z = 0;
 		RWObject* objects;
 		//std::map<std::string, RWObject> objects;
 		static RWModel load(std::string modelName, int modelid);
+		void readCollisionFromFile(std::string modelName);
 		void setPosition(float x, float y, float z);
+		void setCollisionBoundry();
 		void setRotation(float rx, float ry, float rz);
 		void setRotationRadians(float rx, float ry, float rz);
 		void setTexture(std::string textureName);
-		void setCollision(std::string modelName);
 };
 

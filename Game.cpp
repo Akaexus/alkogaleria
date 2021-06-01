@@ -20,6 +20,7 @@ Game::Game()
 	this->direction_forward = 0,
 	this->direction_side = 0,
 	this->direction_vertical = 0;
+	this->intersection = false;
 
 	this->map = new Map;
 
@@ -99,6 +100,44 @@ void Game::sobering(float timeDifferrence)
 		this->alcoholLevel = std::max(0.0f, this->alcoholLevel - this->soberingSpeed * timeDifferrence);
 	}
 }
+
+void Game::collision() {
+	//collision of model
+	float collision_x_min; 
+	float collision_x_max;
+	float collision_y_min;
+	float collision_y_max;
+	float collision_z_min;
+	float collision_z_max;
+	//temporarty values
+	float x_col;
+	float y_col;
+	float z_col;
+
+	for(size_t i = 0; i < this->map->objects.size(); i++) {
+		collision_x_min = std::min(this->map->objects[i]->col_x[0], this->map->objects[i]->col_x[1]);
+		collision_x_max = std::max(this->map->objects[i]->col_x[0], this->map->objects[i]->col_x[1]);
+
+		collision_y_min = std::min(this->map->objects[i]->col_y[0], this->map->objects[i]->col_y[1]);
+		collision_y_max = std::max(this->map->objects[i]->col_y[0], this->map->objects[i]->col_y[1]);
+
+		collision_z_min = std::min(this->map->objects[i]->col_z[0], this->map->objects[i]->col_z[1]);
+		collision_z_max = std::max(this->map->objects[i]->col_z[0], this->map->objects[i]->col_z[1]);
+
+		x_col = std::max(collision_x_min, std::min(this->x, collision_x_max));
+		y_col = std::max(collision_y_min, std::min(this->y, collision_y_max)); 
+		z_col = std::max(collision_z_min, std::min(this->z, collision_z_max));
+
+		float distance = sqrt((x_col - this->x) * (x_col - this->x) + (y_col - this->y) * (y_col - this->y) + (z_col - this->z) * (z_col - this->z));
+		if (distance < this->boundry) {
+			this->intersection = true;
+		}
+		else {
+			this->intersection = false;
+		}
+	}
+
+}
 /// <summary>
 /// Static wrapper for Game::keyCallback
 /// </summary>
@@ -117,7 +156,7 @@ void Game::timePassed(float timeDifferrence)
 	this->spinBottles(timeDifferrence);
 	this->updateVMatrix();
 	this->alcoholicAngleUpdate(timeDifferrence);
-	this->sobering(timeDifferrence);
+	this->sobering(timeDifferrence);/*
 	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	printf(
 		"gamePos: (%.2f, %.2f, %.2f), facing: %.2fdeg\n",
@@ -132,6 +171,9 @@ void Game::timePassed(float timeDifferrence)
 		this->alcoholicAngle * 180 / PI,
 		this->alcoholicCameraAngle * 180 / PI
 	);
+	if (this->intersection) {
+		printf("INTERSEKCJA\n");
+	}*/
 }
 
 void Game::updateVMatrix()
