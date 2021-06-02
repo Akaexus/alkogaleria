@@ -95,12 +95,6 @@ void RWModel::readCollisionFromFile(std::string objectName)
 	plik.open(name.c_str() , std::ios::in);
 	std::string line1, line2, token;
 	int iter = 0;
-	if (!plik) {
-		printf("Jazda z kurwami \n");
-	}
-	else {
-		printf("----------------------------------------------------");
-	}
 	while (std::getline(plik, line1)) {
 		printf("%d\n", iter);
 		if (line1[0] == '#' || line1[0] == 'C' || line1.length() == 0)
