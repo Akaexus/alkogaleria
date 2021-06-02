@@ -1,0 +1,6 @@
+# Exported with Collision File Editor II 0.4 BETA
+
+CST2
+
+1, Box
+-0.07, -0.063, 0, 0.078, 0.063, 0.609, 175, 0, 187, 0

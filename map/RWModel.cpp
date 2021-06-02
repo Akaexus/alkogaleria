@@ -40,6 +40,9 @@ RWModel::RWModel(std::string modelName, int modelid)
 			jf["model"]["atomics"][objectIndex]
 		);
 	}
+	for (int i = 0; i < 6; i++) {
+		this->box[i] = jf["model"]["geometryList"]["box"][i];
+	}
 	printf("Loaded object %s with texture %s\n", filename.c_str(), this->objects[0].textureName.c_str());
 	
 }
@@ -82,7 +85,7 @@ void RWModel::setTexture(std::string textureName)
 		this->objects[index].setTexture(textureName);
 	}
 }
-
+/*
 void RWModel::readCollisionFromFile(std::string objectName)
 {
 	
@@ -90,8 +93,8 @@ void RWModel::readCollisionFromFile(std::string objectName)
 	std::string name = this->modelName, path = "../models/";
 	path += name;
 	name = path;
-	name += ".cst";
-	printf("\n;%s;\n", name.c_str());
+	name += ".txt";
+	printf("%s\n", name.c_str());
 	plik.open(name.c_str() , std::ios::in);
 	std::string line1, line2, token;
 	int iter = 0;
@@ -99,7 +102,7 @@ void RWModel::readCollisionFromFile(std::string objectName)
 		printf("Jazda z kurwami \n");
 	}
 	else {
-		printf("----------------------------------------------------");
+		printf("\n\n----------------------------------------------------\n\n");
 	}
 	while (std::getline(plik, line1)) {
 		printf("%d\n", iter);
@@ -119,8 +122,17 @@ void RWModel::readCollisionFromFile(std::string objectName)
 		printf("%f %f %f\n", this->length, this->width, this->height);
 	}
 }
+void RWModel::setCollision() {
+	.+++++.
+}
+
+*/
+
+
+
 
 void RWModel::setCollisionBoundry() {
+
 	this->col_x[0] = this->x + this->length / 2;
 	this->col_x[1] = this->x - this->length / 2;
 	this->col_y[0] = this->y + this->width / 2;

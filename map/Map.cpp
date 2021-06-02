@@ -102,7 +102,8 @@ int Map::CreateObject(int modelid, float x, float y, float z, float rx, float ry
 	int index = this->objects.size() - 1;
 	this->objects[index]->setPosition(x, y, z);
 	this->objects[index]->setRotation(rx, ry, rz);
-	this->objects[index]->readCollisionFromFile(this->getModelName(modelid));
+	//this->objects[index]->setCollision();
+	//this->objects[index]->readCollisionFromFile(this->getModelName(modelid));
 	this->objects[index]->setCollisionBoundry();
 	return index;
 }

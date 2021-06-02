@@ -100,7 +100,7 @@ void Game::sobering(float timeDifferrence)
 		this->alcoholLevel = std::max(0.0f, this->alcoholLevel - this->soberingSpeed * timeDifferrence);
 	}
 }
-
+/*
 void Game::collision() {
 	//collision of model
 	float collision_x_min; 
@@ -137,7 +137,7 @@ void Game::collision() {
 		}
 	}
 
-}
+}*/
 /// <summary>
 /// Static wrapper for Game::keyCallback
 /// </summary>

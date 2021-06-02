@@ -62,6 +62,7 @@ void RWObject::setRotation(float rx, float ry, float rz)
 	}
 }
 
+
 void RWObject::initializeGeometry(nlohmann::json geometry)
 {
 	

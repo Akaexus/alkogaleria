@@ -64,6 +64,6 @@ class Game
 		static void windowResizeCallback_handler(GLFWwindow* window, int width, int height);
 		void windowResizeCallback(GLFWwindow* window, int width, int height);
 		void useItem();
-		void collision();
+		//void collision();
 };
 
