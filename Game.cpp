@@ -60,7 +60,19 @@ void Game::updatePerspectiveMatrix() {
 void Game::updatePosition(float timeDifferrence)
 {
 	float floorLevel = -2.0f + this->eyesHeight;
+	for (int i = 0; i < this->map->objects.size(); i++) {
+		if (this->map->objects[i]->modelID == 1271) { // box
+			RWModel *obj = this->map->objects[i];
+			if (this->x > obj->x - 0.3 && this->x < obj->x + 0.3 &&
+				this->z > obj->z - 0.3 && this->z < obj->z + 0.3) {
+				floorLevel = floorLevel + 0.6;
+			}
+		}
+	}
+
 	float ceilingLevel = 2.0f - (this->playerHeight - this->eyesHeight);
+	float x_walls = 20.0f - this->wallBuffer;
+	float z_walls = 7.0f - this->wallBuffer;
 	if (this->y == floorLevel || this->y == ceilingLevel) {
 		this->direction_vertical = 0;
 	}
@@ -79,6 +91,14 @@ void Game::updatePosition(float timeDifferrence)
 		ceilingLevel
 	);
 	this->z += (glm::sin(fixed_angle + 0.5 * PI) * this->direction_forward + glm::cos(fixed_angle + 0.5 * PI) * this->direction_side) * timeDifferrence;
+
+	// sciany
+	this->x = std::clamp(this->x, -x_walls, x_walls);
+	this->z = std::clamp(this->z, -z_walls, z_walls);
+
+	if (this->y == floorLevel) {
+		this->direction_vertical = 0;
+	}
 }
 
 void Game::spinBottles(float timeDifference)

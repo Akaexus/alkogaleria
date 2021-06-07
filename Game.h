@@ -20,11 +20,12 @@ class Game
 		float angle = 0;
 		float alcoholicAngle = 0; // movement
 		float alcoholicCameraAngle = 0;
-		float playerHeight = 2.0f;
-		float eyesHeight = 1.8f;
+		float playerHeight = 1.8f;
+		float eyesHeight = 1.5f;
 		float gravity = 5.6f;
 		float jumpVelocity = 1.0f;
 		float verticalAcceleration = 0.0f;
+		float wallBuffer = 0.2f;
 		Map* map;
 		
 
