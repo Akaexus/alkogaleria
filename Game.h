@@ -30,7 +30,7 @@ class Game
 		
 
 	protected:
-		float aspectRatio = 16 / 9;
+		float aspectRatio = 16.0f / 9.0f;
 		const float PLAYER_SPEED = 3;
 		const float PLAYER_ROTATION_SPEED = PI / 2;
 		const float BOTTLE_ROTATION_SPEED = PI / 5;
