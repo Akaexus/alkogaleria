@@ -18,7 +18,6 @@ RWObject::RWObject()
 {
 	this->vertexCount = 0;
 	this->alcoholRandomShift = rand() / (float)RAND_MAX * 0.5 * PI;
-	printf("%f\n", this->alcoholRandomShift);
 }
 
 

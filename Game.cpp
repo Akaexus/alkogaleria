@@ -20,7 +20,6 @@ Game::Game()
 	this->direction_forward = 0,
 	this->direction_side = 0,
 	this->direction_vertical = 0;
-	this->intersection = false;
 
 	this->map = new Map;
 
@@ -60,11 +59,25 @@ void Game::updatePerspectiveMatrix() {
 /// <param name="timeDifferrence">Time difference in seconds</param>
 void Game::updatePosition(float timeDifferrence)
 {
+	float floorLevel = -2.0f + this->eyesHeight;
+	float ceilingLevel = 2.0f - (this->playerHeight - this->eyesHeight);
+	if (this->y == floorLevel || this->y == ceilingLevel) {
+		this->direction_vertical = 0;
+	}
+	this->verticalAcceleration = std::max(this->verticalAcceleration - this->gravity * timeDifferrence, -this->gravity);
+	this->direction_vertical = std::max(this->direction_vertical + this->verticalAcceleration, -this->gravity);
+	
 	this->angle = fmod(this->angle + this->angle_direction * timeDifferrence, 2 * PI);
 	float alcoholicAnglePart = std::clamp(this->alcoholLevel / 3.0f, 0.0f, 1.0f) * sin(this->alcoholicAngle);
 	float fixed_angle = fmod(this->angle - alcoholicAnglePart * PI, 2 * PI);
 	this->x += (glm::sin(fixed_angle) * this->direction_forward + glm::cos(fixed_angle) * direction_side) * timeDifferrence;
-	this->y += this->direction_vertical * timeDifferrence;
+	this->y = std::min(
+		std::max(
+			this->y + this->direction_vertical * timeDifferrence,
+			floorLevel
+		),
+		ceilingLevel
+	);
 	this->z += (glm::sin(fixed_angle + 0.5 * PI) * this->direction_forward + glm::cos(fixed_angle + 0.5 * PI) * this->direction_side) * timeDifferrence;
 }
 
@@ -100,44 +113,7 @@ void Game::sobering(float timeDifferrence)
 		this->alcoholLevel = std::max(0.0f, this->alcoholLevel - this->soberingSpeed * timeDifferrence);
 	}
 }
-/*
-void Game::collision() {
-	//collision of model
-	float collision_x_min; 
-	float collision_x_max;
-	float collision_y_min;
-	float collision_y_max;
-	float collision_z_min;
-	float collision_z_max;
-	//temporarty values
-	float x_col;
-	float y_col;
-	float z_col;
 
-	for(size_t i = 0; i < this->map->objects.size(); i++) {
-		collision_x_min = std::min(this->map->objects[i]->col_x[0], this->map->objects[i]->col_x[1]);
-		collision_x_max = std::max(this->map->objects[i]->col_x[0], this->map->objects[i]->col_x[1]);
-
-		collision_y_min = std::min(this->map->objects[i]->col_y[0], this->map->objects[i]->col_y[1]);
-		collision_y_max = std::max(this->map->objects[i]->col_y[0], this->map->objects[i]->col_y[1]);
-
-		collision_z_min = std::min(this->map->objects[i]->col_z[0], this->map->objects[i]->col_z[1]);
-		collision_z_max = std::max(this->map->objects[i]->col_z[0], this->map->objects[i]->col_z[1]);
-
-		x_col = std::max(collision_x_min, std::min(this->x, collision_x_max));
-		y_col = std::max(collision_y_min, std::min(this->y, collision_y_max)); 
-		z_col = std::max(collision_z_min, std::min(this->z, collision_z_max));
-
-		float distance = sqrt((x_col - this->x) * (x_col - this->x) + (y_col - this->y) * (y_col - this->y) + (z_col - this->z) * (z_col - this->z));
-		if (distance < this->boundry) {
-			this->intersection = true;
-		}
-		else {
-			this->intersection = false;
-		}
-	}
-
-}*/
 /// <summary>
 /// Static wrapper for Game::keyCallback
 /// </summary>
@@ -156,7 +132,7 @@ void Game::timePassed(float timeDifferrence)
 	this->spinBottles(timeDifferrence);
 	this->updateVMatrix();
 	this->alcoholicAngleUpdate(timeDifferrence);
-	this->sobering(timeDifferrence);/*
+	this->sobering(timeDifferrence);
 	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	printf(
 		"gamePos: (%.2f, %.2f, %.2f), facing: %.2fdeg\n",
@@ -171,9 +147,11 @@ void Game::timePassed(float timeDifferrence)
 		this->alcoholicAngle * 180 / PI,
 		this->alcoholicCameraAngle * 180 / PI
 	);
-	if (this->intersection) {
-		printf("INTERSEKCJA\n");
-	}*/
+	printf(
+		"vertical acceleration: %.2f, vertical speed: %.2f\n",
+		this->verticalAcceleration,
+		this->direction_vertical
+	);
 }
 
 void Game::updateVMatrix()
@@ -240,6 +218,9 @@ void Game::keyCallback(GLFWwindow* window, int key, int scancode, int action, in
 				break;
 
 			// VERTICAL
+			case GLFW_KEY_SPACE:
+				this->verticalAcceleration = this->jumpVelocity;
+				break;
 			case GLFW_KEY_LEFT_SHIFT:
 				this->direction_vertical = PLAYER_SPEED;
 				break;

@@ -20,9 +20,13 @@ class Game
 		float angle = 0;
 		float alcoholicAngle = 0; // movement
 		float alcoholicCameraAngle = 0;
-		float boundry = 1; //player sphere radius
+		float playerHeight = 2.0f;
+		float eyesHeight = 1.8f;
+		float gravity = 5.6f;
+		float jumpVelocity = 1.0f;
+		float verticalAcceleration = 0.0f;
 		Map* map;
-		bool intersection = false;
+		
 
 	protected:
 		float aspectRatio = 16 / 9;
@@ -32,7 +36,7 @@ class Game
 		float angle_direction = 0,
 			direction_forward = 0,
 			direction_side = 0,
-			direction_vertical;
+			direction_vertical = 0;
 	// MISC
 	public:
 		float alcoholLevel = 0;

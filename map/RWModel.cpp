@@ -43,6 +43,7 @@ RWModel::RWModel(std::string modelName, int modelid)
 	for (int i = 0; i < 6; i++) {
 		this->box[i] = jf["model"]["geometryList"]["box"][i];
 	}
+	this->setCollisionBoundry();
 	printf("Loaded object %s with texture %s\n", filename.c_str(), this->objects[0].textureName.c_str());
 	
 }
@@ -85,46 +86,6 @@ void RWModel::setTexture(std::string textureName)
 		this->objects[index].setTexture(textureName);
 	}
 }
-/*
-void RWModel::readCollisionFromFile(std::string objectName)
-{
-	
-	std::fstream plik;
-	std::string name = this->modelName, path = "../models/";
-	path += name;
-	name = path;
-	name += ".txt";
-	printf("%s\n", name.c_str());
-	plik.open(name.c_str() , std::ios::in);
-	std::string line1, line2, token;
-	int iter = 0;
-	while (std::getline(plik, line1)) {
-		printf("%d\n", iter);
-		if (line1[0] == '#' || line1[0] == 'C' || line1.length() == 0)
-			continue;
-		getline(plik, line2);
-		std::stringstream ss(line2);
-		while (std::getline(ss, token, ',')) {
-			if (iter <= 5) {
-				std::istringstream(token) >> this->box[iter];
-				iter++;
-			}
-		}
-		this->length = box[3];
-		this->width = box[4];
-		this->height = box[5];
-		printf("%f %f %f\n", this->length, this->width, this->height);
-	}
-}
-void RWModel::setCollision() {
-	.+++++.
-}
-
-*/
-
-
-
-
 void RWModel::setCollisionBoundry() {
 
 	this->col_x[0] = this->x + this->length / 2;
@@ -133,5 +94,4 @@ void RWModel::setCollisionBoundry() {
 	this->col_y[1] = this->y - this->width / 2;
 	this->col_z[0] = this->z + this->height / 2;
 	this->col_z[1] = this->z - this->height / 2;
-	printf("%d X:%f,%f Y:%f,%f Z:%f,%f", this->modelID, this->col_x[0], this->col_x[1], this->col_y[0], this->col_y[1], this->col_z[0], this->col_z[1]);
 }
